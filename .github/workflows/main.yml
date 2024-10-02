@@ -10,4 +10,5 @@ jobs:
       - run: |
           echo ${{ github.event.discussion.title }}
           echo ${{ github.event.discussion.body }}
+          echo ${{ github.event.discussion.user.login }}
           echo ${{ github.event.discussion.user.name }}

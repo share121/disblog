@@ -12,19 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          echo ${{ github.event.discussion.title }}
+          echo ${{ github.event.discussion.title }} > discussion.txt
           echo ${{ github.event.discussion.body }}
           echo ${{ github.event.discussion.user.login }}
           echo ${{ github.event.discussion.user.name }}
           echo ${{ github.event.discussion.answer_html_url }}
       - name: Commit files
         run: |
-          git config --local user.email "2854631158@qq.com"
-          git config --local user.name "share121"
-          git add .
-          git commit -m "update readme.md"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add changes"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ github.token }}
-          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

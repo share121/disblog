@@ -9,11 +9,10 @@ jobs:
   label_discussion:
     runs-on: ubuntu-latest
     steps:
-      - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISCUSSION_URL: ${{ github.event.discussion.html_url }}
-        run: |
-          gh discussion edit $DISCUSSION_URL --add-label 未分类
+      - run: |
+          echo ${{ github.event.discussion.title }}
+          echo ${{ github.event.discussion.body }}
+          echo ${{ github.event.discussion.user.name }}
 
   # deploy:
   #   name: Deploy

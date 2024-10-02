@@ -3,12 +3,28 @@ on:
   discussion:
   discussion_comment:
 
+permissions:
+  contents: write
+
 jobs:
   label_discussion:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - run: |
           echo ${{ github.event.discussion.title }}
           echo ${{ github.event.discussion.body }}
           echo ${{ github.event.discussion.user.login }}
           echo ${{ github.event.discussion.user.name }}
+          echo ${{ github.event.discussion.answer_html_url }}
+      - name: Commit files
+        run: |
+          git config --local user.email "2854631158@qq.com"
+          git config --local user.name "share121"
+          git add .
+          git commit -m "update readme.md"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ github.token }}
+          branch: main

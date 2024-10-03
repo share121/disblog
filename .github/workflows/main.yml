@@ -16,13 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Build
-        run: node 1.js
-
       # - name: Commit files
       #   run: |
       #     git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"

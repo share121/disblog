@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import process, { exit } from "process";
+import process from "process";
 
 const {
     repo,
@@ -67,21 +67,21 @@ function genPrompt() {
 }
 
 async function aiRating() {
-  // const channel = client.channels.cache.get(channelId),
-  //   msg = genPrompt();
-  // console.log("Sent message to channel");
-  // await channel.send(msg);
-  // console.log("Waiting for reply...");
-  // const reply = await channel.awaitMessages({
-  //   filter: (replyMsg) =>
-  //     replyMsg.author.id === targetUserId && replyMsg.channel.id === channelId,
-  //   max: 1,
-  //   time: 30_000,
-  // });
-  // console.dir(reply, {
-  //   depth: null,
-  // });
-  // await client.close();
+  const channel = client.channels.cache.get(channelId),
+    msg = genPrompt();
+  console.log("Sent message to channel");
+  await channel.send(msg);
+  console.log("Waiting for reply...");
+  const reply = await channel.awaitMessages({
+    filter: (replyMsg) =>
+      replyMsg.author.id === targetUserId && replyMsg.channelId === channelId,
+    max: 1,
+    time: 30_000,
+  });
+  console.dir(reply, {
+    depth: null,
+  });
+  await client.close();
   return;
   await channel.send(`收到回复：${reply}`);
   if (reply.includes("无法判断")) {

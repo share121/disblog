@@ -97,7 +97,7 @@ async function aiRating() {
     filter: (replyMsg) =>
       replyMsg.author.id === targetUserId && replyMsg.channelId === channelId,
     max: 1,
-    time: 30_000,
+    time: 60_000,
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);

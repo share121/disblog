@@ -18,7 +18,7 @@ jobs:
           python-version: "3.x"
 
       - name: 安装依赖项
-        run: pip install discord.py nest_asyncio
+        run: pip install discord.py nest_asyncio requests
 
       - name: 运行脚本
         env:

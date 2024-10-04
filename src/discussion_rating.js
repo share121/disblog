@@ -19,6 +19,7 @@ const {
 /** @param {string} data */
 function graphql(data) {
   return fetch("https://api.github.com/graphql", {
+    method: "POST",
     body: JSON.stringify({ query: data }),
     headers: { Authorization: `Bearer ${githubToken}` },
   }).then((res) => res.json());

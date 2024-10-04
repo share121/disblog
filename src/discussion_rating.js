@@ -67,21 +67,21 @@ function genPrompt() {
 }
 
 async function aiRating() {
-  const channel = client.channels.cache.get(channelId),
-    msg = genPrompt();
-  console.log("Sent message to channel");
-  await channel.send(msg);
-  console.log("Waiting for reply...");
-  const reply = await channel.awaitMessages({
-    filter: (replyMsg) =>
-      replyMsg.author.id === targetUserId && replyMsg.channelId === channelId,
-    max: 1,
-    time: 30_000,
-  });
-  console.dir(reply, {
-    depth: null,
-  });
-  await client.close();
+  // const channel = client.channels.cache.get(channelId),
+  //   msg = genPrompt();
+  // console.log("Sent message to channel");
+  // await channel.send(msg);
+  // console.log("Waiting for reply...");
+  // const reply = await channel.awaitMessages({
+  //   filter: (replyMsg) =>
+  //     replyMsg.author.id === targetUserId && replyMsg.channelId === channelId,
+  //   max: 1,
+  //   time: 30_000,
+  // });
+  // console.dir(reply, {
+  //   depth: null,
+  // });
+  await client.destroy();
   return;
   await channel.send(`收到回复：${reply}`);
   if (reply.includes("无法判断")) {
@@ -93,7 +93,7 @@ async function aiRating() {
   } else if (reply.includes("好")) {
     addLabel("高质");
   }
-  await client.close();
+  await client.destroy();
 }
 
 addLabel("待审核");

@@ -44,7 +44,9 @@ async function getLabelId(labelName) {
 /** @param {string} labelName */
 async function addLabel(labelName) {
   const labelId = await getLabelId(labelName);
-  console.log(`Adding label ${labelName} to discussion ${discussionNumber}`);
+  console.log(
+    `Adding label ${labelName}: ${labelId} to discussion ${discussionNumber}: ${discussionId}`
+  );
   await graphql(
     `
 mutation {
@@ -76,16 +78,16 @@ async function aiRating() {
     max: 1,
     time: 30_000,
   });
-  await channel.send(`收到回复：${reply.content}`);
-  if (reply.content.includes("无法判断")) {
+  await channel.send(`收到回复：${reply}`);
+  if (reply.includes("无法判断")) {
     addLabel("无法判断");
-  } else if (reply.content.includes("法律风险")) {
+  } else if (reply.includes("法律风险")) {
     addLabel("风险");
-  } else if (reply.content.includes("普通")) {
+  } else if (reply.includes("普通")) {
     addLabel("普通");
-  } else if (reply.content.includes("高质")) {
+  } else if (reply.includes("高质")) {
     addLabel("高质");
-  } else if (reply.content.includes("低质")) {
+  } else if (reply.includes("低质")) {
     addLabel("低质");
   }
   await client.close();

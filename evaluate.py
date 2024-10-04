@@ -60,6 +60,7 @@ async def fetch_and_process_discussions():
     channel = client.get_channel(channel_id)
     while True:
         await channel.send(msg)
+        logging.info("Sent message to channel")
 
         def check(m):
             return m.author.id == target_user_id and m.channel.id == channel_id
@@ -68,6 +69,7 @@ async def fetch_and_process_discussions():
         async with db_lock:
             try:
                 while True:
+                    logging.info("Waiting for reply...")
                     reply = await client.wait_for(
                         "message",
                         timeout=200.0,
@@ -102,6 +104,7 @@ async def fetch_and_process_discussions():
 
 def add_label(label_name: str):
     label_id = get_label_id(label_name)
+    logging.info(f"Adding label {label_name} to discussion {discussion_id}")
     graphql(
         f"""
 mutation {{
@@ -116,6 +119,7 @@ mutation {{
 
 
 def get_label_id(label_name: str) -> str:
+    logging.info(f"Getting label ID for {label_name}")
     response = graphql(
         f"""
 {{

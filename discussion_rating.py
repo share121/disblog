@@ -4,7 +4,6 @@ from discord.ext import commands
 import nest_asyncio
 import logging
 import os
-
 import requests
 
 # 使用 logging.info()、logging.error() 等替代 print()
@@ -17,7 +16,7 @@ github_api = "https://api.github.com/graphql"
 repo = os.getenv("repo")
 github_token = os.getenv("github_token")
 discussion_id = os.getenv("discussion_id")
-discussion_number = os.getenv("discussion_number")
+discussion_number = int(os.getenv("discussion_number"))
 discussion_title = os.getenv("discussion_title")
 discussion_body = os.getenv("discussion_body")
 owner = repo.split("/")[0]
@@ -25,14 +24,24 @@ repo_name = repo.split("/")[1]
 
 # Discord 配置
 discord_token = os.getenv("discord_token")
-channel_id = os.getenv("channel_id")
-target_user_id = os.getenv("target_user_id")
-variable = os.getenv("variable")
+channel_id = int(os.getenv("channel_id"))
+target_user_id = int(os.getenv("target_user_id"))
 
-intents = discord.Intents.default()
-intents.message_content = True
-client = commands.Bot(command_prefix="!", intents=intents)
-client.run(discord_token)
+
+def add_label(label_name: str):
+    label_id = get_label_id(label_name)
+    logging.info(f"Adding label {label_name} to discussion {discussion_id}")
+    graphql(
+        f"""
+mutation {{
+    addLabelsToLabelable(
+        input: {{labelableId: "{discussion_id}", labelIds: ["{label_id}"]}}
+    ) {{
+        clientMutationId
+    }}
+}}
+"""
+    )
 
 
 async def main():
@@ -44,12 +53,6 @@ async def main():
         logging.error(f"HTTP Exception occurred: {e}")
     except Exception as e:
         logging.error(f"Unexpected error: {e}")
-
-
-@client.event
-async def on_ready():
-    logging.info(f"Logged in as {client.user}")
-    await fetch_and_process_discussions()
 
 
 async def fetch_and_process_discussions():
@@ -102,22 +105,6 @@ async def fetch_and_process_discussions():
                 )
 
 
-def add_label(label_name: str):
-    label_id = get_label_id(label_name)
-    logging.info(f"Adding label {label_name} to discussion {discussion_id}")
-    graphql(
-        f"""
-mutation {{
-    addLabelsToLabelable(
-        input: {{labelableId: "{discussion_id}", labelIds: ["{label_id}"]}}
-    ) {{
-        clientMutationId
-    }}
-}}
-"""
-    )
-
-
 def get_label_id(label_name: str) -> str:
     logging.info(f"Getting label ID for {label_name}")
     response = graphql(
@@ -138,6 +125,13 @@ def graphql(data: str):
     return requests.post(github_api, json=({"query": data}))
 
 
+add_label(discussion_id, "待审核")
+intents = discord.Intents.default()
+intents.message_content = True
+client = commands.Bot(command_prefix="!", intents=intents)
+client.run(discord_token)
+
+
 @client.event
 async def on_error(event, *args, **kwargs):
     logging.error(f"Error occurred in {event}: {args} - {kwargs}")
@@ -147,3 +141,9 @@ async def on_error(event, *args, **kwargs):
         await client.start(discord_token)
     except Exception as e:
         logging.error(f"Reconnection failed: {e}")
+
+
+@client.event
+async def on_ready():
+    logging.info(f"Logged in as {client.user}")
+    await fetch_and_process_discussions()

@@ -1,7 +1,8 @@
 {
   "author": "share121",
   "dependencies": {
-    "discord.js": "^14.16.3"
+    "discord.js": "^14.16.3",
+    "html-minifier": "^4.0.0"
   },
   "description": "",
   "keywords": [],
@@ -10,5 +11,8 @@
   "name": "disblog",
   "scripts": {},
   "type": "module",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "devDependencies": {
+    "@types/html-minifier": "^4.0.5"
+  }
 }

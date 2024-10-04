@@ -1,13 +1,13 @@
-name: Discussion Rating
+name: Build and Deploy
 
 on:
-  discussion:
+  push:
 
 permissions:
-  discussions: write
+  contents: write
 
 jobs:
-  run-bot:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,15 +40,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install -P
 
-      - name: Rating discussion
+      - name: Build
         env:
           repo: ${{ github.repository }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          discussionId: ${{ github.event.discussion.node_id }}
-          discussionNumber: ${{ github.event.discussion.number }}
-          discussionTitle: ${{ github.event.discussion.title }}
-          discussionBody: ${{ github.event.discussion.body }}
-          discordToken: ${{ secrets.DISCORD_TOKEN }}
-          channelId: ${{ secrets.CHANNEL_ID}}
-          targetUserId: ${{ secrets.TARGET_USER_ID }}
-        run: node discussion_rating.js
+        run: node build.js
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          cname: www.inot.top

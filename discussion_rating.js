@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import process from "process";
+import { env } from "process";
 
 const {
     repo,
@@ -11,7 +11,7 @@ const {
     discussionNumber: discussionNumberStr,
     channelId,
     targetUserId,
-  } = process.env,
+  } = env,
   [owner, repoName] = repo.split("/"),
   client = new Client({
     intents: ["Guilds", "GuildMessages", "MessageContent"],

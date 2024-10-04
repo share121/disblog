@@ -101,7 +101,7 @@ async function aiRating() {
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
-  if (reply.includes("无法判断")) {
+  if (reply.includes("无法判断") || reply.includes("差")) {
     addLabel("低质");
   } else if (reply.includes("坏")) {
     addLabel("风险");

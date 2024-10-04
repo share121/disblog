@@ -84,7 +84,7 @@ function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
 论坛内容：${discussionBody}
-［评论内容：好 or 普通 or 坏 or 无法判断］`;
+［评论内容：好 or 普通 or 差 or 无法判断］`;
 }
 
 async function aiRating() {
@@ -94,17 +94,16 @@ async function aiRating() {
   await channel.send(msg);
   console.log("Waiting for reply...");
   const replyList = await channel.awaitMessages({
-    filter: (replyMsg) =>
-      replyMsg.author.id === targetUserId && replyMsg.channelId === channelId,
+    filter: (m) => m.author.id === targetUserId && m.channelId === channelId,
     max: 1,
     time: 60_000,
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
-  if (reply.includes("无法判断") || reply.includes("差")) {
-    addLabel("低质");
-  } else if (reply.includes("坏")) {
+  if (reply.includes("风险")) {
     addLabel("风险");
+  } else if (reply.includes("无法判断") || reply.includes("差")) {
+    addLabel("低质");
   } else if (reply.includes("普通")) {
     addLabel("普通");
   } else if (reply.includes("好")) {

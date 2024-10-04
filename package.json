@@ -1,8 +1,10 @@
 {
   "author": "share121",
   "dependencies": {
+    "@tensorflow/tfjs-node": "^4.21.0",
     "discord.js": "^14.16.3",
-    "html-minifier": "^4.0.0"
+    "html-minifier": "^4.0.0",
+    "nsfwjs": "^4.1.0"
   },
   "description": "",
   "keywords": [],

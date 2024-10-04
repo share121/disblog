@@ -1,5 +1,20 @@
 import { Client } from "discord.js";
 import { env } from "process";
+import axios from "axios";
+import tf from "@tensorflow/tfjs-node";
+import nsfw from "nsfwjs";
+
+const model = nsfw.load("./inception_v3/");
+
+async function isNsfw() {
+  const pic = await axios.get(`link-to-picture`, {
+    responseType: "arraybuffer",
+  });
+  const image = tf.node.decodeImage(pic.data, 3);
+  const predictions = await model.classify(image);
+  image.dispose();
+  return ["Porn", "Hentai"].includes(predictions[0].className);
+}
 
 const {
     repo,
@@ -45,7 +60,6 @@ async function getLabelId(labelName) {
 
 /** @param {string} labelName */
 async function addLabel(labelName) {
-  if (labelName != "待审核") rmLabel("待审核");
   const labelId = await getLabelId(labelName);
   console.log(
     `Adding label ${labelName}: ${labelId} to discussion ${discussionNumber}: ${discussionId}`
@@ -80,6 +94,20 @@ mutation {
   );
 }
 
+async function clearLabel() {
+  console.log(
+    `Removing All labels on discussion ${discussionNumber}: ${discussionId}`
+  );
+  await graphql(
+    `
+mutation {
+  clearLabelsFromLabelable(input: {labelableId: "${discussionId}"}) {
+    clientMutationId
+  }
+}`
+  );
+}
+
 function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
@@ -107,19 +135,37 @@ async function aiRating() {
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
+  let type = undefined;
   if (reply.includes("风险")) {
-    addLabel("风险");
+    type = "风险";
   } else if (reply.includes("无法判断") || reply.includes("差")) {
-    addLabel("低质");
+    type = "低质";
   } else if (reply.includes("普通")) {
-    addLabel("普通");
+    type = "普通";
   } else if (reply.includes("好")) {
-    addLabel("高质");
+    type = "高质";
+  }
+  if (type !== undefined) {
+    addLabel(type);
+    rmLabel("待审核");
   }
   await client.destroy();
 }
 
+async function checkContentIsNsfw() {
+  let promises = discussionBody
+    .match(
+      /(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/g
+    )
+    .map((i) => isNsfw(i));
+  const res = await Promise.allSettled(promises);
+  const isNsfwRes = res.some((e) => e.value === true);
+  if (isNsfwRes) addLabel("NSFW");
+}
+
+clearLabel();
 addLabel("待审核");
+checkContentIsNsfw();
 client.on("ready", async () => {
   console.log(`Logged in as ${client.user.tag}!`);
   while (true) {

@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import process from "process";
+import process, { exit } from "process";
 
 const {
     repo,
@@ -63,7 +63,7 @@ function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
 论坛内容：${discussionBody}
-［评论内容：高质 or 普通 or 低质 or 法律风险］`;
+［评论内容：好 or 普通 or 坏 or 无法判断］`;
 }
 
 async function aiRating() {
@@ -78,19 +78,19 @@ async function aiRating() {
     max: 1,
     time: 30_000,
   });
-  console.dir(reply);
+  console.dir(reply, {
+    depth: null,
+  });
   return;
   await channel.send(`收到回复：${reply}`);
   if (reply.includes("无法判断")) {
-    addLabel("无法判断");
-  } else if (reply.includes("法律风险")) {
+    addLabel("低质");
+  } else if (reply.includes("坏")) {
     addLabel("风险");
   } else if (reply.includes("普通")) {
     addLabel("普通");
-  } else if (reply.includes("高质")) {
+  } else if (reply.includes("好")) {
     addLabel("高质");
-  } else if (reply.includes("低质")) {
-    addLabel("低质");
   }
   await client.close();
 }
@@ -106,5 +106,6 @@ client.on("ready", async () => {
       console.error(err);
     }
   }
+  exit(0);
 });
 client.login(discordToken);

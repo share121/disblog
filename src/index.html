@@ -262,7 +262,7 @@
             </div>
           </div>
         </div>
-        <form onsubmit="search(event)">
+        <form onsubmit="searchHandle(event)">
           <div style="position: relative; margin-left: auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -290,16 +290,20 @@
       </div>
     </div>
     <script>
+      var owner = "share121",
+        repo = "disblog";
       var searchbox = document.getElementById("searchbox");
 
-      function search(e) {
+      function searchHandle(e) {
         e.preventDefault();
-        try {
-          alert(searchbox.value);
-        } catch (e) {
-          alert(e);
-        }
-        request("GET", "https://api.github.com/graphql", JSON.stringify({}));
+        search(searchbox.value, null);
+      }
+
+      /** @param {string} query @param {string | null} endCur */
+      function search(query, endCur) {
+        graphql(searchQuery(query, endCur, 10), function () {
+          alert(this.response);
+        });
       }
 
       //     Future<PaginationModel<HDataModel>> search(
@@ -450,6 +454,15 @@
           number +
           ") { author { avatarUrl(size: 50) login } createdAt lastEditedAt bodyHTML id bodyText title comments { totalCount } } } }"
         );
+      }
+
+      /** @param {string} text */
+      function queryEncode(text) {
+        return text
+          .replace(/\\/g, "\\\\")
+          .replace(/"/g, '\\"')
+          .replace(/\r/g, "\\r")
+          .replace(/\n/g, "\\n");
       }
 
       /**

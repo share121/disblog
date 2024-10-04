@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable func-style */
 /* eslint-disable no-console */
-import { Client } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import process from "process";
 
 const {
@@ -18,7 +18,7 @@ const {
   } = process.env,
   [owner, repoName] = repo.split("/"),
   channelId = Number(channelIdStr),
-  client = new Client(),
+  client = new Client({ intents: GatewayIntentBits.Guilds }),
   delayTime = Number(delayTimeStr),
   discussionNumber = Number(discussionNumberStr),
   targetUserId = Number(targetUserIdStr);

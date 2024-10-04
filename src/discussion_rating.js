@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client } from "discord.js";
 import process from "process";
 
 const {
@@ -13,7 +13,7 @@ const {
     targetUserId,
   } = process.env,
   [owner, repoName] = repo.split("/"),
-  client = new Client({ intents: GatewayIntentBits.Guilds }),
+  client = new Client({ intents: ["GuildMessages", "Guilds"] }),
   discussionNumber = Number(discussionNumberStr);
 
 /** @param {string} data */
@@ -43,6 +43,7 @@ async function getLabelId(labelName) {
 
 /** @param {string} labelName */
 async function addLabel(labelName) {
+  if (labelName != "待审核") rmLabel("待审核");
   const labelId = await getLabelId(labelName);
   console.log(
     `Adding label ${labelName}: ${labelId} to discussion ${discussionNumber}: ${discussionId}`
@@ -59,6 +60,24 @@ mutation {
   );
 }
 
+/** @param {string} labelName */
+async function rmLabel(labelName) {
+  const labelId = await getLabelId(labelName);
+  console.log(
+    `Removing label ${labelName}: ${labelId} on discussion ${discussionNumber}: ${discussionId}`
+  );
+  await graphql(
+    `
+mutation {
+  removeLabelsFromLabelable(
+    input: {labelableId: "${discussionId}", labelIds: ["${labelId}"]}
+  ) {
+    clientMutationId
+  }
+}`
+  );
+}
+
 function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
@@ -67,22 +86,18 @@ function genPrompt() {
 }
 
 async function aiRating() {
-  // const channel = client.channels.cache.get(channelId),
-  //   msg = genPrompt();
-  // console.log("Sent message to channel");
-  // await channel.send(msg);
-  // console.log("Waiting for reply...");
-  // const reply = await channel.awaitMessages({
-  //   filter: (replyMsg) =>
-  //     replyMsg.author.id === targetUserId && replyMsg.channelId === channelId,
-  //   max: 1,
-  //   time: 30_000,
-  // });
-  // console.dir(reply, {
-  //   depth: null,
-  // });
-  await client.destroy();
-  return;
+  const channel = client.channels.cache.get(channelId),
+    msg = genPrompt();
+  console.log("Sent message to channel");
+  await channel.send(msg);
+  console.log("Waiting for reply...");
+  const replyList = await channel.awaitMessages({
+    filter: (replyMsg) =>
+      replyMsg.author.id === targetUserId && replyMsg.channelId === channelId,
+    max: 1,
+    time: 30_000,
+  });
+  const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
   if (reply.includes("无法判断")) {
     addLabel("低质");

@@ -1,6 +1,3 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable func-style */
-/* eslint-disable no-console */
 import { Client, GatewayIntentBits } from "discord.js";
 import process from "process";
 
@@ -13,20 +10,10 @@ const {
     discordToken,
     discussionNumber: discussionNumberStr,
     channelId,
-    targetUserId,
-    delayTime: delayTimeStr,
   } = process.env,
   [owner, repoName] = repo.split("/"),
   client = new Client({ intents: GatewayIntentBits.Guilds }),
-  delayTime = Number(delayTimeStr),
   discussionNumber = Number(discussionNumberStr);
-
-/** @param {number} ms */
-function delay(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 /** @param {string} data */
 function graphql(data) {
@@ -72,39 +59,27 @@ function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
 论坛内容：${discussionBody}
-［评论内容：好 or 普通 or 差 or 无法判断］`;
+［评论内容：高质 or 普通 or 低质 or 法律风险］`;
 }
 
-// eslint-disable-next-line max-statements
 async function aiRating() {
   const channel = client.channels.cache.get(channelId),
     msg = genPrompt();
-  while (true) {
-    console.log("Sent message to channel");
-    await channel.send(msg);
-    console.log("Waiting for reply...");
-    const reply = await channel.awaitMessages(
-      (replyMsg) =>
-        replyMsg.author.id === targetUserId &&
-        replyMsg.channel.id === channelId,
-      { timeout: 200 }
-    );
-    await channel.send(`收到回复：${reply.content}`);
-    if (reply.content.includes("无法判断")) {
-      addLabel("低质");
-    } else if (reply.content.includes("普通")) {
-      addLabel("普通");
-    } else if (reply.content.includes("好")) {
-      addLabel("高质");
-    } else if (reply.content.includes("差")) {
-      addLabel("风险");
-    } else if (reply.content.includes("等待")) {
-      await delay(delayTime);
-      // eslint-disable-next-line no-continue
-      continue;
-    }
-    await client.close();
+  console.log("Sent message to channel");
+  await channel.send(msg);
+  console.log("Waiting for reply...");
+  const reply = await channel.awaitMessages({ timeout: 200 });
+  await channel.send(`收到回复：${reply.content}`);
+  if (reply.content.includes("法律风险")) {
+    addLabel("风险");
+  } else if (reply.content.includes("普通")) {
+    addLabel("普通");
+  } else if (reply.content.includes("高质")) {
+    addLabel("高质");
+  } else if (reply.content.includes("低质")) {
+    addLabel("低质");
   }
+  await client.close();
 }
 
 client.on("ready", async () => {

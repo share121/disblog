@@ -125,7 +125,7 @@ def graphql(data: str):
     return requests.post(github_api, json=({"query": data}))
 
 
-add_label(discussion_id, "待审核")
+add_label("待审核")
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix="!", intents=intents)

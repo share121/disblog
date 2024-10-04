@@ -90,6 +90,7 @@ async function aiRating() {
   await client.close();
 }
 
+addLabel("审核中");
 client.on("ready", async () => {
   console.log(`Logged in as ${client.user.tag}!`);
   while (true) {

@@ -13,7 +13,7 @@ const {
     targetUserId,
   } = process.env,
   [owner, repoName] = repo.split("/"),
-  client = new Client({ intents: ["GuildMessages", "Guilds"] }),
+  client = new Client({ intents: ["GuildMessages", "MessageContent"] }),
   discussionNumber = Number(discussionNumberStr);
 
 /** @param {string} data */

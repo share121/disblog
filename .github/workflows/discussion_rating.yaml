@@ -10,27 +10,46 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: 设置 Python
-        uses: actions/setup-python@v5
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.x"
+          node-version: 20
 
-      - name: 安装依赖项
-        run: pip install discord.py nest_asyncio requests
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
 
-      - name: 运行脚本
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Rating discussion
         env:
-          # Github 信息
           repo: ${{ github.repository }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          discussion_id: ${{ github.event.discussion.id }}
-          discussion_number: ${{ github.event.discussion.number }}
-          discussion_title: ${{ github.event.discussion.title }}
-          discussion_body: ${{ github.event.discussion.body }}
-          # Discord 信息
-          discord_token: ${{ secrets.DISCORD_TOKEN }}
-          channel_id: ${{ secrets.CHANNEL_ID}}
-          target_user_id: ${{ secrets.TARGET_USER_ID }}
-        run: python discussion_rating.py
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          discussionId: ${{ github.event.discussion.id }}
+          discussionNumber: ${{ github.event.discussion.number }}
+          discussionTitle: ${{ github.event.discussion.title }}
+          discussionBody: ${{ github.event.discussion.body }}
+          discordToken: ${{ secrets.DISCORD_TOKEN }}
+          channelId: ${{ secrets.CHANNEL_ID}}
+          targetUserId: ${{ secrets.TARGET_USER_ID }}
+          delayTime: 3000
+        run: node src/discussion_rating.js

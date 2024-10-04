@@ -1,0 +1,19 @@
+{
+  "author": "share121",
+  "dependencies": {
+    "discord.js": "^14.16.3"
+  },
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "eslint": "^9.11.1",
+    "globals": "^15.10.0"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "main": "index.html",
+  "name": "disblog",
+  "scripts": {},
+  "type": "module",
+  "version": "1.0.0"
+}

@@ -12,16 +12,14 @@ const {
     discussionBody,
     discordToken,
     discussionNumberStr,
-    channelIdStr,
-    targetUserIdStr,
+    channelId,
+    targetUserId,
     delayTimeStr,
   } = process.env,
   [owner, repoName] = repo.split("/"),
-  channelId = Number(channelIdStr),
   client = new Client({ intents: GatewayIntentBits.Guilds }),
   delayTime = Number(delayTimeStr),
-  discussionNumber = Number(discussionNumberStr),
-  targetUserId = Number(targetUserIdStr);
+  discussionNumber = Number(discussionNumberStr);
 
 /** @param {number} ms */
 function delay(ms) {

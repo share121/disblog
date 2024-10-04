@@ -6,10 +6,8 @@ import nsfw from "nsfwjs";
 
 const model = nsfw.load("./inception_v3/");
 
-async function isNsfw() {
-  const pic = await axios.get(`link-to-picture`, {
-    responseType: "arraybuffer",
-  });
+async function isNsfw(url) {
+  const pic = await axios.get(url, { responseType: "arraybuffer" });
   const image = tf.node.decodeImage(pic.data, 3);
   const predictions = await model.classify(image);
   image.dispose();

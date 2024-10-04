@@ -83,7 +83,14 @@ mutation {
 function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
-论坛内容：${discussionBody}
+论坛内容：${discussionBody
+    .replace(/\!\[.*?]\(.*?\)/g, "")
+    .replace(/\[.*?]\(.*?\)/g, "")
+    .replace(
+      /(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/gi,
+      ""
+    )
+    .replace(/\s+/g, " ")}
 ［评论内容：好 or 普通 or 差 or 无法判断］`;
 }
 

@@ -2,9 +2,515 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <title>纟黾网</title>
+    <meta name="description" content="这是一个仿绝区零绳网的论坛" />
+    <meta name="keywords" content="绝区零,绳网,论坛,博客" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DisBlog</title>
+    <link rel="shortcut icon" href="icon.svg" type="image/svg+xml" />
+    <style>
+      * {
+        overflow-wrap: break-word;
+      }
+      body {
+        margin: 0;
+        background: #121212;
+        color: #fff;
+        font-size: 16px;
+        font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+          "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei",
+          "WenQuanYi Micro Hei", sans-serif;
+      }
+      /* clears the ‘X’ from Internet Explorer */
+      input[type="search"]::-ms-clear {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+      input[type="search"]::-ms-reveal {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+      /* clears the ‘X’ from Chrome */
+      input[type="search"]::-webkit-search-decoration,
+      input[type="search"]::-webkit-search-cancel-button,
+      input[type="search"]::-webkit-search-results-button,
+      input[type="search"]::-webkit-search-results-decoration {
+        display: none;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(144, 147, 153, 0.5);
+        border-radius: 100px;
+        transition: background-color ease 0.3s;
+        cursor: pointer;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(144, 147, 153, 0.3);
+      }
+
+      form {
+        display: flex;
+        margin-left: 8px;
+        -ms-flex: 1;
+        flex: 1;
+      }
+      #search-box {
+        background: #222222;
+        padding: 0 16px;
+        border: #313131 4px solid;
+        border-radius: 100px;
+        color: #fff;
+        outline: none;
+        height: 56px;
+        font-size: 18px;
+        max-width: 56px;
+        width: 100%;
+        transition: max-width ease 0.3s, padding-left ease 0.3s,
+          border-color ease 0.3s;
+      }
+      #search-box:focus,
+      #search-box:valid {
+        padding-left: 48px;
+        max-width: 300px;
+      }
+      #search-box:focus {
+        border-color: #fbfe00;
+        animation: border-color 1s 0.3s linear infinite alternate;
+      }
+
+      .discussion-card {
+        display: block;
+        color: #fff;
+        padding: 0;
+        margin: 6px;
+        text-align: left;
+        width: 230px;
+        overflow: hidden;
+        border-radius: 12px 12px 0 12px;
+        background: #222222;
+        border: #000 solid 3px;
+        transition: border-color ease 0.3s, top ease 0.3s, left ease 0.3s;
+        cursor: pointer;
+        outline: none;
+      }
+      .discussion-card:hover {
+        border-color: #fbfe00;
+        animation: border-color 1s 0.3s linear infinite alternate;
+      }
+      .discussion-card:focus-visible {
+        border-color: #fbfe00;
+        animation: border-color 1s 0.3s linear infinite alternate;
+      }
+      @keyframes border-color {
+        0% {
+          border-color: #fbfe00;
+        }
+        100% {
+          border-color: #dcfe00;
+        }
+      }
+      .discussion-card > .cover-box {
+        position: relative;
+      }
+      .discussion-card > .cover-box > .cover {
+        object-fit: contain;
+        width: 100%;
+      }
+      .discussion-card > .cover-box > .comment-count {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        display: flex;
+        align-items: center;
+      }
+      .comment-count::before {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url(comment.svg);
+        margin-right: 4px;
+      }
+      .discussion-card > .author-box {
+        position: relative;
+        margin: 0 8px;
+      }
+      .discussion-card > .author-box > .avatar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: #222 solid 2px;
+        box-sizing: border-box;
+      }
+      .discussion-card > .author-box > .name {
+        margin-left: 54px;
+        color: #555;
+        font-weight: bold;
+        font-size: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-bottom: #626262 solid 2px;
+      }
+      .discussion-card > .title {
+        margin: 8px 8px 4px;
+        font-weight: bold;
+        font-size: 18px;
+        max-height: 2.4em;
+        line-height: 1.2;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .discussion-card > .content {
+        margin: 0 8px 8px;
+        max-height: 3.6em;
+        line-height: 1.2;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        color: #aeaead;
+      }
+      #cardgrid {
+        margin: 0 auto;
+      }
+    </style>
   </head>
-  <body></body>
-  <script></script>
+  <body>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        background: #000;
+        padding: 8px 16px;
+        overflow: auto;
+      "
+    >
+      <div
+        style="
+          line-height: 1;
+          display: flex;
+          padding: 8px;
+          align-items: center;
+          border-radius: 100px;
+          background: linear-gradient(#212121, #141414);
+          box-shadow: inset 0 2px 2px #313431, inset 0 -2px 2px #181818;
+        "
+      >
+        <img
+          src="avatar.svg"
+          alt="头像"
+          style="
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 100%;
+            margin-right: 4px;
+          "
+        />
+        <div>
+          <div style="font-weight: bold">法厄同</div>
+          <div
+            style="
+              margin-top: 4px;
+              border-radius: 100px;
+              background: #222;
+              box-shadow: inset 0 2px 2px #131313, inset 0 -2px 2px #262626;
+              font-size: 0.8em;
+              width: 130px;
+              position: relative;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                border-radius: 100px;
+                background: linear-gradient(90deg, #4661fd, #10bff0);
+                width: 50%;
+                height: 16px;
+              "
+            ></div>
+            <div
+              style="
+                position: absolute;
+                white-space: nowrap;
+                left: 8px;
+                top: 2px;
+              "
+            >
+              57257 / 114514
+            </div>
+          </div>
+        </div>
+        <div style="margin-left: 4px; text-align: center; margin-right: 8px">
+          <div style="font-size: 26px; font-weight: bold">40</div>
+          <div style="margin-top: 2px; color: #7b7b7b; font-size: 12px">
+            LEVEL
+          </div>
+        </div>
+      </div>
+      <form onsubmit="search(event)">
+        <div style="position: relative; margin-left: auto">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            style="
+              position: absolute;
+              left: 12px;
+              top: 12px;
+              pointer-events: none;
+            "
+          >
+            <path
+              fill="currentColor"
+              d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"
+            />
+          </svg>
+          <input title="搜索" required type="search" id="search-box" />
+        </div>
+      </form>
+    </div>
+    <div id="cardgrid"></div>
+    <script>
+      function search(e) {
+        e.preventDefault();
+        console.log(e);
+      }
+
+      // request(
+      //   "GET",
+      //   "https://api.github.com/repos/zhengyuxiang/zhengyuxiang.github.io/contents/index.json",
+      //   undefined,
+      //   function (e) {
+      //     alert(this.response);
+      //   }
+      // );
+
+      for (var i = 0; i < 10; i++) {
+        cardgrid.appendChild(
+          createDiscussionCard(
+            "cover.svg",
+            100,
+            "avatar.svg",
+            "namenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamename",
+            "titletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitle",
+            "contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent"
+          )
+        );
+      }
+
+      waterfall(cardgrid);
+      window.addEventListener(
+        "resize",
+        debounce(function () {
+          waterfall(cardgrid);
+        }, 500)
+      );
+
+      function createDiscussionCard(
+        cover,
+        commentCount,
+        avatar,
+        name,
+        title,
+        content
+      ) {
+        var card = document.createElement("button");
+        card.className = "discussion-card";
+        card.type = "button";
+        var coverBox = document.createElement("div");
+        coverBox.className = "cover-box";
+        var coverEl = document.createElement("img");
+        coverEl.className = "cover";
+        coverEl.src = cover;
+        coverEl.alt = "封面";
+        coverEl.addEventListener("load", function () {
+          waterfall(cardgrid);
+        });
+        coverEl.addEventListener("error", function () {
+          coverEl.src = "cover.svg";
+        });
+        coverBox.appendChild(coverEl);
+        var commentCountEl = document.createElement("div");
+        commentCountEl.className = "comment-count";
+        commentCountEl.textContent = commentCount;
+        coverBox.appendChild(commentCountEl);
+        card.appendChild(coverBox);
+        var authorBox = document.createElement("div");
+        authorBox.className = "author-box";
+        var avatarEl = document.createElement("img");
+        avatarEl.className = "avatar";
+        avatarEl.src = avatar;
+        avatarEl.alt = "头像";
+        avatarEl.addEventListener("error", function () {
+          avatarEl.src = "avatar.svg";
+        });
+        authorBox.appendChild(avatarEl);
+        var authorNameEl = document.createElement("div");
+        authorNameEl.className = "name";
+        authorNameEl.textContent = name;
+        authorBox.appendChild(authorNameEl);
+        card.appendChild(authorBox);
+        var titleEl = document.createElement("h3");
+        titleEl.className = "title";
+        titleEl.textContent = title;
+        card.appendChild(titleEl);
+        var contentEl = document.createElement("div");
+        contentEl.className = "content";
+        contentEl.textContent = content;
+        card.appendChild(contentEl);
+        return card;
+      }
+
+      /**
+       * @param {"GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS"} method
+       * @param {string} url
+       * @param {string | undefined} body
+       * @param {(this: XMLHttpRequest, ev: ProgressEvent<XMLHttpRequestEventTarget>) => any} cb
+       */
+      function request(method, url, body, cb) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        xhr.addEventListener("loadend", cb);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(body);
+      }
+
+      /**
+       * @param {Function} fn
+       * @param {number} wait
+       * @returns {Function}
+       */
+      function debounce(fn, wait) {
+        var timer = null;
+        return function () {
+          clearTimeout(timer);
+          timer = setTimeout(fn.bind(this), wait, arguments);
+        };
+      }
+
+      function waterfall(container) {
+        if (typeof container === "string") {
+          container = document.querySelector(container);
+        }
+
+        function style(el) {
+          return window.getComputedStyle(el);
+        }
+
+        function margin(name, el) {
+          return parseFloat(style(el)["margin" + name]) || 0;
+        }
+
+        function px(n) {
+          return parseFloat(n) + "px";
+        }
+        function y(el) {
+          return parseFloat(el.style.top);
+        }
+        function x(el) {
+          return parseFloat(el.style.left);
+        }
+        function width(el) {
+          return parseFloat(style(el).width);
+        }
+        function height(el) {
+          return parseFloat(style(el).height);
+        }
+        function bottom(el) {
+          return y(el) + height(el) + margin("Bottom", el);
+        }
+        function right(el) {
+          return x(el) + width(el) + margin("Right", el);
+        }
+
+        function sort(l) {
+          l = l.sort(function (a, b) {
+            var bottomDiff = bottom(b) - bottom(a);
+            return bottomDiff || x(b) - x(a);
+          });
+        }
+
+        function Boundary(firstRow) {
+          var els = firstRow;
+          sort(els);
+
+          this.add = function (el) {
+            els.push(el);
+            sort(els);
+            els.pop();
+          };
+
+          this.min = function () {
+            return els[els.length - 1];
+          };
+          this.max = function () {
+            return els[0];
+          };
+        }
+
+        function placeEl(el, top, left) {
+          el.style.position = "absolute";
+          el.style.top = px(top);
+          el.style.left = px(left);
+        }
+
+        function placeFirstElement(el) {
+          placeEl(el, 0, margin("Left", el));
+        }
+
+        function placeAtTheFirstLine(prev, el) {
+          placeEl(el, prev.style.top, right(prev) + margin("Left", el));
+        }
+
+        function placeAtTheSmallestColumn(minEl, el) {
+          placeEl(el, bottom(minEl) + margin("Top", el), x(minEl));
+        }
+
+        function adjustContainer(container, maxEl) {
+          container.style.position = "relative";
+          container.style.height = px(bottom(maxEl) + margin("Bottom", maxEl));
+          // TODO: container.style.width = px(width(maxEl) + margin("Right", maxEl));
+        }
+
+        function thereIsSpace(els, i) {
+          return right(els[i - 1]) + width(els[i]) <= width(container);
+        }
+
+        var els = container.children;
+
+        if (els.length) {
+          placeFirstElement(els[0]);
+        }
+
+        for (var i = 1; i < els.length && thereIsSpace(els, i); i++) {
+          placeAtTheFirstLine(els[i - 1], els[i]);
+        }
+
+        var firstRow = [].slice.call(els, 0, i);
+        var boundary = new Boundary(firstRow);
+
+        for (; i < els.length; i++) {
+          placeAtTheSmallestColumn(boundary.min(), els[i]);
+          boundary.add(els[i]);
+        }
+
+        adjustContainer(container, boundary.max());
+      }
+    </script>
+  </body>
 </html>

@@ -1,0 +1,37 @@
+name: Run Discord Bot
+
+on:
+  discussion:
+
+permissions:
+  discussions: write
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: 安装依赖项
+        run: pip install discord.py nest_asyncio
+
+      - name: 运行脚本
+        env:
+          # Github 信息
+          repo: ${{ github.repository }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          discussion_id: ${{ github.event.discussion.id }}
+          discussion_number: ${{ github.event.discussion.number }}
+          discussion_title: ${{ github.event.discussion.title }}
+          discussion_body: ${{ github.event.discussion.body }}
+          # Discord 信息
+          discord_token: ${{ secrets.DISCORD_TOKEN }}
+          channel_id: ${{ secrets.CHANNEL_ID}}
+          target_user_id: ${{ secrets.TARGET_USER_ID }}
+          variable: ${{ secrets.VARIABLE }}
+        run: python evaluate.py

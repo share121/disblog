@@ -1,4 +1,4 @@
-name: Run Discord Bot
+name: Discussion Rating
 
 on:
   discussion:
@@ -34,4 +34,4 @@ jobs:
           channel_id: ${{ secrets.CHANNEL_ID}}
           target_user_id: ${{ secrets.TARGET_USER_ID }}
           variable: ${{ secrets.VARIABLE }}
-        run: python evaluate.py
+        run: python discussion_rating.py

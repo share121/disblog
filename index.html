@@ -117,7 +117,6 @@
         position: relative;
       }
       .discussion-card > .cover-box > .cover {
-        object-fit: contain;
         width: 100%;
       }
       .discussion-card > .cover-box > .comment-count {
@@ -185,106 +184,111 @@
       }
       #cardgrid {
         margin: 0 auto;
+        max-width: 1500px;
       }
     </style>
   </head>
   <body>
-    <div
-      style="
-        display: flex;
-        justify-content: space-between;
-        background: #000;
-        padding: 8px 16px;
-        overflow: auto;
-      "
-    >
+    <div style="display: flex; height: 100vh; flex-direction: column">
       <div
         style="
-          line-height: 1;
           display: flex;
-          padding: 8px;
-          align-items: center;
-          border-radius: 100px;
-          background: linear-gradient(#212121, #141414);
-          box-shadow: inset 0 2px 2px #313431, inset 0 -2px 2px #181818;
+          justify-content: space-between;
+          background: #000;
+          padding: 8px 16px;
+          overflow: auto;
         "
       >
-        <img
-          src="avatar.svg"
-          alt="头像"
+        <div
           style="
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 100%;
-            margin-right: 4px;
+            line-height: 1;
+            display: flex;
+            padding: 8px;
+            align-items: center;
+            border-radius: 100px;
+            background: linear-gradient(#212121, #141414);
+            box-shadow: inset 0 2px 2px #313431, inset 0 -2px 2px #181818;
           "
-        />
-        <div>
-          <div style="font-weight: bold">法厄同</div>
-          <div
+        >
+          <img
+            src="avatar.svg"
+            alt="头像"
             style="
-              margin-top: 4px;
-              border-radius: 100px;
-              background: #222;
-              box-shadow: inset 0 2px 2px #131313, inset 0 -2px 2px #262626;
-              font-size: 0.8em;
-              width: 130px;
-              position: relative;
-              overflow: hidden;
+              width: 40px;
+              height: 40px;
+              object-fit: cover;
+              border-radius: 100%;
+              margin-right: 4px;
             "
-          >
+          />
+          <div>
+            <div style="font-weight: bold">法厄同</div>
             <div
               style="
+                margin-top: 4px;
                 border-radius: 100px;
-                background: linear-gradient(90deg, #4661fd, #10bff0);
-                width: 50%;
-                height: 16px;
-              "
-            ></div>
-            <div
-              style="
-                position: absolute;
-                white-space: nowrap;
-                left: 8px;
-                top: 2px;
+                background: #222;
+                box-shadow: inset 0 2px 2px #131313, inset 0 -2px 2px #262626;
+                font-size: 0.8em;
+                width: 130px;
+                position: relative;
+                overflow: hidden;
               "
             >
-              57257 / 114514
+              <div
+                style="
+                  border-radius: 100px;
+                  background: linear-gradient(90deg, #4661fd, #10bff0);
+                  width: 50%;
+                  height: 16px;
+                "
+              ></div>
+              <div
+                style="
+                  position: absolute;
+                  white-space: nowrap;
+                  left: 8px;
+                  top: 2px;
+                "
+              >
+                57257 / 114514
+              </div>
+            </div>
+          </div>
+          <div style="margin-left: 4px; text-align: center; margin-right: 8px">
+            <div style="font-size: 26px; font-weight: bold">40</div>
+            <div style="margin-top: 2px; color: #7b7b7b; font-size: 12px">
+              LEVEL
             </div>
           </div>
         </div>
-        <div style="margin-left: 4px; text-align: center; margin-right: 8px">
-          <div style="font-size: 26px; font-weight: bold">40</div>
-          <div style="margin-top: 2px; color: #7b7b7b; font-size: 12px">
-            LEVEL
+        <form onsubmit="search(event)">
+          <div style="position: relative; margin-left: auto">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              style="
+                position: absolute;
+                left: 12px;
+                top: 12px;
+                pointer-events: none;
+              "
+            >
+              <path
+                fill="currentColor"
+                d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"
+              />
+            </svg>
+            <input title="搜索" required type="search" id="search-box" />
           </div>
-        </div>
+        </form>
       </div>
-      <form onsubmit="search(event)">
-        <div style="position: relative; margin-left: auto">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            style="
-              position: absolute;
-              left: 12px;
-              top: 12px;
-              pointer-events: none;
-            "
-          >
-            <path
-              fill="currentColor"
-              d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"
-            />
-          </svg>
-          <input title="搜索" required type="search" id="search-box" />
-        </div>
-      </form>
+      <div style="overflow: auto; flex: 1">
+        <div id="cardgrid"></div>
+      </div>
     </div>
-    <div id="cardgrid"></div>
     <script>
       function search(e) {
         e.preventDefault();
@@ -481,15 +485,17 @@
           placeEl(el, bottom(minEl) + margin("Top", el), x(minEl));
         }
 
-        function adjustContainer(container, maxEl) {
+        function adjustContainer(container, maxEl, width) {
           container.style.position = "relative";
           container.style.height = px(bottom(maxEl) + margin("Bottom", maxEl));
-          // TODO: container.style.width = px(width(maxEl) + margin("Right", maxEl));
+          container.style.width = px(width);
         }
 
         function thereIsSpace(els, i) {
           return right(els[i - 1]) + width(els[i]) <= width(container);
         }
+
+        container.style.width = "100%";
 
         var els = container.children;
 
@@ -500,6 +506,7 @@
         for (var i = 1; i < els.length && thereIsSpace(els, i); i++) {
           placeAtTheFirstLine(els[i - 1], els[i]);
         }
+        var width = right(els[i - 1]) + margin("Right", els[i - 1]);
 
         var firstRow = [].slice.call(els, 0, i);
         var boundary = new Boundary(firstRow);
@@ -509,7 +516,7 @@
           boundary.add(els[i]);
         }
 
-        adjustContainer(container, boundary.max());
+        adjustContainer(container, boundary.max(), width);
       }
     </script>
   </body>

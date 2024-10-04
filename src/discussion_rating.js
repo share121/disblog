@@ -78,6 +78,8 @@ async function aiRating() {
     max: 1,
     time: 30_000,
   });
+  console.dir(reply);
+  return;
   await channel.send(`收到回复：${reply}`);
   if (reply.includes("无法判断")) {
     addLabel("无法判断");

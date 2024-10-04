@@ -10,6 +10,7 @@ const {
     discordToken,
     discussionNumber: discussionNumberStr,
     channelId,
+    targetUserId,
   } = process.env,
   [owner, repoName] = repo.split("/"),
   client = new Client({ intents: GatewayIntentBits.Guilds }),
@@ -68,9 +69,16 @@ async function aiRating() {
   console.log("Sent message to channel");
   await channel.send(msg);
   console.log("Waiting for reply...");
-  const reply = await channel.awaitMessages({ timeout: 200 });
+  const reply = await channel.awaitMessages({
+    filter: (replyMsg) =>
+      replyMsg.author.id === targetUserId && replyMsg.channel.id === channelId,
+    max: 1,
+    time: 30_000,
+  });
   await channel.send(`收到回复：${reply.content}`);
-  if (reply.content.includes("法律风险")) {
+  if (reply.content.includes("无法判断")) {
+    addLabel("无法判断");
+  } else if (reply.content.includes("法律风险")) {
     addLabel("风险");
   } else if (reply.content.includes("普通")) {
     addLabel("普通");

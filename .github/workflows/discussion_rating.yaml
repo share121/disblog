@@ -51,5 +51,4 @@ jobs:
           discordToken: ${{ secrets.DISCORD_TOKEN }}
           channelId: ${{ secrets.CHANNEL_ID}}
           targetUserId: ${{ secrets.TARGET_USER_ID }}
-          delayTime: 3000
         run: node src/discussion_rating.js

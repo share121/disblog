@@ -81,6 +81,7 @@ async function aiRating() {
   console.dir(reply, {
     depth: null,
   });
+  await client.close();
   return;
   await channel.send(`收到回复：${reply}`);
   if (reply.includes("无法判断")) {
@@ -106,6 +107,5 @@ client.on("ready", async () => {
       console.error(err);
     }
   }
-  exit(0);
 });
 client.login(discordToken);

@@ -44,7 +44,7 @@ jobs:
         env:
           repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          discussionId: ${{ github.event.discussion.id }}
+          discussionId: ${{ github.event.discussion.node_id }}
           discussionNumber: ${{ github.event.discussion.number }}
           discussionTitle: ${{ github.event.discussion.title }}
           discussionBody: ${{ github.event.discussion.body }}

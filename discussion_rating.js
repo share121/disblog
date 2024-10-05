@@ -172,7 +172,9 @@ async function aiRating() {
 }
 
 async function checkContentIsNsfw() {
-  let promises = discussionBody.match(urlRegex).map((i) => isNsfw(i));
+  const m = discussionBody.match(urlRegex);
+  if (m === null) return;
+  const promises = m.map((i) => isNsfw(i));
   const res = await Promise.allSettled(promises);
   res
     .filter((e) => e.status === "rejected")

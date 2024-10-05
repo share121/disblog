@@ -248,13 +248,10 @@ addLabel("待审核");
 checkContentIsNsfw();
 client.on("ready", async () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  while (true) {
-    try {
-      await aiRating();
-      break;
-    } catch (err) {
-      console.error(err);
-    }
+  try {
+    await aiRating();
+  } catch (err) {
+    console.error(err);
   }
 });
 client.login(discordToken);

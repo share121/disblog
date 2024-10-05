@@ -13,7 +13,6 @@
   "main": "index.html",
   "name": "disblog",
   "scripts": {},
-  "type": "module",
   "version": "1.0.0",
   "devDependencies": {
     "@types/html-minifier": "^4.0.5"

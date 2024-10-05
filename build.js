@@ -1,6 +1,6 @@
-import { env } from "process";
-import { promises as fs } from "fs";
-import { minify } from "html-minifier";
+const env = requir("process").env;
+const fs = requir("fs").promise;
+const minify = requir("html-minifier").minify;
 const [owner, repoName] = env.repo.split("/");
 
 try {

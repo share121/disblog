@@ -1,8 +1,8 @@
-gradio
+gradio==4.44.1
 gradio_client
 qwen-vl-utils
 transformers-stream-generator
-torch
+torch==2.4.1
 torchvision
 git+https://github.com/huggingface/transformers.git
 accelerate

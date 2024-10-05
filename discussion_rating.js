@@ -98,6 +98,32 @@ mutation {
   );
 }
 
+/** @param {string} text */
+function queryEncode(text) {
+  return text
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/\r/g, "\\r")
+    .replace(/\n/g, "\\n");
+}
+
+/** @param {string} body */
+async function addComment(body) {
+  console.log(
+    `Adding comment to discussion ${discussionNumber}: ${discussionId}`
+  );
+  await graphql(
+    `
+mutation {
+  addDiscussionComment(input: { discussionId: "${discussionId}", body: "${queryEncode(
+      body
+    )}" }) {
+    clientMutationId
+  }
+}`
+  );
+}
+
 /** @param {string} labelName */
 async function rmLabel(labelName) {
   const labelId = await getLabelId(labelName);
@@ -150,6 +176,7 @@ async function aiRating() {
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
+  addComment(reply);
   let type = undefined;
   if (reply.includes("风险")) {
     type = "风险";

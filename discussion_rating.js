@@ -1,5 +1,5 @@
-const { Client } = require("discord.js");
 const { env } = require("process");
+const { spawn } = require("child_process");
 const tf = require("@tensorflow/tfjs-node");
 const nsfw = require("nsfwjs");
 const path = require("path");
@@ -12,16 +12,17 @@ const {
     discussionId,
     discussionTitle,
     discussionBody,
-    discordToken,
     discussionNumber: discussionNumberStr,
-    channelId,
-    targetUserId,
   } = env,
   [owner, repoName] = repo.split("/"),
-  client = new Client({
-    intents: ["Guilds", "GuildMessages", "MessageContent"],
-  }),
   discussionNumber = Number(discussionNumberStr);
+
+const OpenAI = require("openai");
+
+const client = new OpenAI({
+  baseURL: "http://localhost:11434/v1/",
+  apiKey: "ollama",
+});
 
 const urlRegex =
   /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
@@ -170,7 +171,6 @@ function genPrompt() {
 标题: ${discussionTitle}
 论坛内容: ${discussionBody.replace(/\s+/g, " ").trim()}
 [评论内容: 好 or 普通 or 差 or 无法判断]
-[要求: 解读论坛内容，并给出评论内容，先说结论，再说原因]
 [回答格式: <好|普通|差|无法判断><换行><原因>]`;
   }
   const body = discussionBody
@@ -185,23 +185,44 @@ function genPrompt() {
 文章中的链接:
 ${m.join("\n")}
 [评论内容: 好 or 普通 or 差 or 无法判断]
-[要求: 解读文章中的链接和论坛内容，并给出评论内容，先说结论，再说原因]
 [回答格式: <好|普通|差|无法判断><换行><原因>]`;
 }
 
-async function aiRating() {
-  const channel = client.channels.cache.get(channelId),
-    msg = genPrompt();
-  console.log("Sent message to channel");
-  await channel.send(msg);
-  console.log("Waiting for reply...");
-  const replyList = await channel.awaitMessages({
-    filter: (m) => m.author.id === targetUserId && m.channelId === channelId,
-    max: 1,
-    time: 60_000,
+async function ai(prompt) {
+  const chatCompletion = await client.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content: `你要扮演论坛审核员，一切违反中华人民共和国法律和道德的帖子都不能让它过审。
+
+## 要求
+
+1. 先说结论，再分析原因
+2. 分点说明哪些地方违法了哪些法律，哪些地方可能会有风险
+
+## 回答格式
+
+### 评价
+
+好|普通|差|无法判断
+
+### 原因
+
+1. **原文内容**：违规原因
+2. **原文内容**：违规原因
+`,
+      },
+      { role: "user", content: prompt },
+    ],
+    model: "qwen2.5:3b",
   });
-  const reply = replyList.first().content;
-  await channel.send(`收到回复：${reply}`);
+  return chatCompletion.choices[0].message.content;
+}
+
+async function aiRating() {
+  const task = spawn("ollama", ["serve"]);
+  const reply = await ai(genPrompt());
+  task.kill();
   let type = "无法判断";
   if (reply.includes("无法判断")) {
   } else if (reply.includes("风险")) {
@@ -271,13 +292,4 @@ ${nsfwUrls
 clearLabel();
 addLabel("待审核");
 checkContentIsNsfw();
-client.on("ready", async () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-  try {
-    await aiRating();
-  } catch (err) {
-    console.error(err);
-  }
-  client.destroy();
-});
-client.login(discordToken);
+aiRating();

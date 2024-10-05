@@ -41,6 +41,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install -P
 
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
       - name: Rating discussion
         env:
           actionId: ${{ github.run_id }}

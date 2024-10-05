@@ -35,7 +35,7 @@ const model = nsfw.load(
 );
 async function checkNsfw(url) {
   console.log(`Check url ${url}`);
-  const pic = await sharp(
+  const pic = sharp(
     await (
       await fetch(url, {
         headers: {
@@ -46,14 +46,26 @@ async function checkNsfw(url) {
         },
       })
     ).arrayBuffer()
-  )
-    .gif()
-    .toBuffer();
-  const image = tf.node.decodeImage(new Uint8Array(pic), 3);
-  const predictions = await (await model).classify(image);
-  image.dispose();
-  console.log({ url, predictions });
-  return [["Porn", "Hentai"].includes(predictions[0].className), predictions];
+  );
+  const image1 = tf.node.decodeImage(
+    new Uint8Array(await pic.jpeg().toBuffer()),
+    3
+  );
+  const predictions1 = await (await model).classify(image1);
+  image1.dispose();
+  const image2 = tf.node.decodeImage(
+    new Uint8Array(await pic.gif().toBuffer()),
+    3
+  );
+  const predictions2 = await (await model).classify(image1);
+  image2.dispose();
+  console.log({ url, predictions: predictions1 });
+  return [
+    ["Porn", "Hentai"].includes(predictions1[0].className) ||
+      ["Porn", "Hentai"].includes(predictions2[0].className),
+    predictions1,
+    predictions2,
+  ];
 }
 
 /** @param {string} data */

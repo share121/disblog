@@ -6,6 +6,7 @@ const path = require("path");
 const sharp = require("sharp");
 
 const {
+    actionId,
     repo,
     githubToken,
     discussionId,
@@ -208,7 +209,9 @@ async function aiRating() {
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
-  addComment(reply);
+  addComment(
+    `${reply}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}`
+  );
   let type = undefined;
   if (reply.includes("无法判断")) {
     type = "无法判断";

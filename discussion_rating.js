@@ -227,6 +227,12 @@ async function aiRating() {
 }
 
 async function checkContentIsNsfw() {
+  function formatPredictions(predictions) {
+    return predictions
+      .map((p) => `${p.className}: ${p.probability}`)
+      .join("\n  ");
+  }
+
   const m = discussionBody.match(urlRegex);
   if (m === null) return;
   const nsfwUrls = [];
@@ -248,7 +254,7 @@ async function checkContentIsNsfw() {
 ${nsfwUrls
   .map(
     ({ url, predictions }, i) =>
-      `${i + 1}. ${url}\n  ${JSON.stringify(
+      `${i + 1}. ${url}\n  ${formatPredictions(
         predictions
       )}\n  ![${url}](${url})\n`
   )

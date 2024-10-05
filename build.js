@@ -1,5 +1,5 @@
 const env = require("process").env;
-const fs = require("fs").promise;
+const fs = require("fs").promises;
 const minify = require("html-minifier").minify;
 const [owner, repoName] = env.repo.split("/");
 

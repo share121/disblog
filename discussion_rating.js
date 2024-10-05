@@ -8,9 +8,8 @@ const path = require("path");
 tf.enableProdMode();
 const model = nsfw.load(
   new URL(
-    "file:" + path.resolve(__dirname, "inception_v3") + path.sep
-  ).toString(),
-  { size: 224 }
+    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
+  ).toString()
 );
 
 async function isNsfw(url) {

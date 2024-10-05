@@ -6,13 +6,18 @@ const nsfw = require("nsfwjs");
 const path = require("path");
 
 tf.enableProdMode();
-const model = nsfw.load(path.resolve(__dirname, "inception_v3") + path.sep);
+const model = nsfw.load(
+  new URL(
+    "file:" + path.resolve(__dirname, "inception_v3") + path.sep
+  ).toString()
+);
 
 async function isNsfw(url) {
   const pic = await axios.get(url, { responseType: "arraybuffer" });
   const image = tf.node.decodeImage(pic.data, 3);
   const predictions = await (await model).classify(image);
   image.dispose();
+  console.log({ url, predictions });
   return ["Porn", "Hentai"].includes(predictions[0].className);
 }
 

@@ -221,7 +221,8 @@ async function ai(prompt) {
 
 async function aiRating() {
   const task = spawn("ollama", ["serve"]);
-  const reply = await ai(genPrompt());
+  const msg = genPrompt();
+  const reply = await ai(msg);
   task.kill();
   let type = "无法判断";
   if (reply.includes("无法判断")) {

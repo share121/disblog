@@ -125,8 +125,8 @@ async function ai(prompt) {
 
 ### 原因
 
-1. **原文内容**：违规原因
-2. **原文内容**：违规原因
+1. **原文内容**：原因
+2. **原文内容**：原因
 `,
       },
       { role: "user", content: prompt },

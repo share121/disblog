@@ -5,22 +5,6 @@ const tf = require("@tensorflow/tfjs-node");
 const nsfw = require("nsfwjs");
 const path = require("path");
 
-tf.enableProdMode();
-const model = nsfw.load(
-  new URL(
-    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
-  ).toString()
-);
-
-async function isNsfw(url) {
-  const pic = await axios.get(url, { responseType: "arraybuffer" });
-  const image = tf.node.decodeImage(pic.data, 3);
-  const predictions = await (await model).classify(image);
-  image.dispose();
-  console.log({ url, predictions });
-  return ["Porn", "Hentai"].includes(predictions[0].className);
-}
-
 const {
     repo,
     githubToken,
@@ -37,6 +21,26 @@ const {
     intents: ["Guilds", "GuildMessages", "MessageContent"],
   }),
   discussionNumber = Number(discussionNumberStr);
+
+const urlRegex =
+  /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
+
+tf.enableProdMode();
+const model = nsfw.load(
+  new URL(
+    "file:" + path.resolve(__dirname, "mobilenet_v2_mid") + path.sep
+  ).toString(),
+  { size: 299 }
+);
+
+async function isNsfw(url) {
+  const pic = await axios.get(url, { responseType: "arraybuffer" });
+  const image = tf.node.decodeImage(pic.data, 3);
+  const predictions = await (await model).classify(image);
+  image.dispose();
+  console.log({ url, predictions });
+  return ["Porn", "Hentai"].includes(predictions[0].className);
+}
 
 /** @param {string} data */
 function graphql(data) {
@@ -119,10 +123,7 @@ function genPrompt() {
 论坛内容：${discussionBody
     .replace(/\!\[.*?]\(.*?\)/g, "")
     .replace(/\[.*?]\(.*?\)/g, "")
-    .replace(
-      /(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/gi,
-      ""
-    )
+    .replace(urlRegex, "")
     .replace(/\s+/g, " ")}
 ［评论内容：好 or 普通 or 差 or 无法判断］`;
 }
@@ -158,11 +159,7 @@ async function aiRating() {
 }
 
 async function checkContentIsNsfw() {
-  let promises = discussionBody
-    .match(
-      /(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/g
-    )
-    .map((i) => isNsfw(i));
+  let promises = discussionBody.match(urlRegex).map((i) => isNsfw(i));
   const res = await Promise.allSettled(promises);
   const isNsfwRes = res.some((e) => e.value === true);
   if (isNsfwRes) addLabel("NSFW");

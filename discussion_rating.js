@@ -1,15 +1,16 @@
 import { Client } from "discord.js";
 import { env } from "process";
 import axios from "axios";
-import tf from "@tensorflow/tfjs-node";
-import nsfw from "nsfwjs";
+import * as tf from "@tensorflow/tfjs-node";
+import * as nsfw from "nsfwjs";
 
+tf.enableProdMode();
 const model = nsfw.load("./inception_v3/");
 
 async function isNsfw(url) {
   const pic = await axios.get(url, { responseType: "arraybuffer" });
   const image = tf.node.decodeImage(pic.data, 3);
-  const predictions = await model.classify(image);
+  const predictions = await (await model).classify(image);
   image.dispose();
   return ["Porn", "Hentai"].includes(predictions[0].className);
 }

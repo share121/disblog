@@ -202,9 +202,8 @@ async function aiRating() {
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
-  let type = undefined;
+  let type = "无法判断";
   if (reply.includes("无法判断")) {
-    type = "无法判断";
   } else if (reply.includes("风险")) {
     type = "风险";
   } else if (reply.includes("差")) {
@@ -225,10 +224,8 @@ async function aiRating() {
 > ${msg.split("\n").join("\n> ")}
 > </details>`
   );
-  if (type !== undefined) {
-    addLabel(type);
-    rmLabel("待审核");
-  }
+  addLabel(type);
+  rmLabel("待审核");
 }
 
 async function checkContentIsNsfw() {

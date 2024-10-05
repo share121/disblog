@@ -176,7 +176,8 @@ function genPrompt() {
 标题: ${discussionTitle}
 论坛内容: ${discussionBody.replace(/\s+/g, " ").trim()}
 [评论内容: 好 or 普通 or 差 or 无法判断]
-[要求: 解读论坛内容，并给出评论内容]`;
+[要求: 解读论坛内容，并给出评论内容]
+[回答格式: <好|普通|差|无法判断><换行><原因>]`;
   }
   const body = discussionBody
     .replace(/!\[.*?]\(.*?\)/g, "")

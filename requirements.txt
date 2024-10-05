@@ -1,5 +1,3 @@
-transformers
 torch
-qwen-vl-utils
-torchvision
 accelerate
+modelscope

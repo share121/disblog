@@ -178,10 +178,10 @@ async function aiRating() {
   await channel.send(`收到回复：${reply}`);
   addComment(reply);
   let type = undefined;
-  if (reply.includes("风险")) {
-    type = "风险";
-  } else if (reply.includes("无法判断")) {
+  if (reply.includes("无法判断")) {
     type = "无法判断";
+  } else if (reply.includes("风险")) {
+    type = "风险";
   } else if (reply.includes("差")) {
     type = "低质";
   } else if (reply.includes("普通")) {

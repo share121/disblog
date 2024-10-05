@@ -46,7 +46,7 @@ async function isNsfw(url) {
       })
     ).arrayBuffer()
   )
-    .jpeg()
+    .png()
     .toBuffer();
   const image = tf.node.decodeImage(new Uint8Array(pic), 3);
   const predictions = await (await model).classify(image);

@@ -1,8 +1,8 @@
 import { Client } from "discord.js";
 import { env } from "process";
 import axios from "axios";
-import * as tf from "@tensorflow/tfjs-node";
-import * as nsfw from "nsfwjs";
+import tf from "@tensorflow/tfjs-node";
+import nsfw from "nsfwjs";
 
 tf.enableProdMode();
 const model = nsfw.load("./inception_v3/");

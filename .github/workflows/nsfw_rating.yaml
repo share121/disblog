@@ -46,7 +46,5 @@ jobs:
           repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
-          discussionNumber: ${{ github.event.discussion.number }}
-          discussionTitle: ${{ github.event.discussion.title }}
           discussionBody: ${{ github.event.discussion.body }}
-        run: node discussion_rating.js
+        run: node nsfw_rating.js

@@ -3,6 +3,7 @@ const env = require("process").env;
 const tf = require("@tensorflow/tfjs-node");
 const nsfw = require("nsfwjs");
 const path = require("path");
+const sharp = require("sharp");
 
 const {
     repo,
@@ -33,16 +34,20 @@ const model = nsfw.load(
 
 async function isNsfw(url) {
   console.log(`Check url ${url}`);
-  const pic = await (
-    await fetch(url, {
-      headers: {
-        Origin: new URL(url).origin,
-        Referer: url,
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0",
-      },
-    })
-  ).arrayBuffer();
+  const pic = await sharp(
+    await (
+      await fetch(url, {
+        headers: {
+          Origin: new URL(url).origin,
+          Referer: url,
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0",
+        },
+      })
+    ).arrayBuffer()
+  )
+    .jpeg()
+    .toBuffer();
   const image = tf.node.decodeImage(new Uint8Array(pic), 3);
   const predictions = await (await model).classify(image);
   image.dispose();

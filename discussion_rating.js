@@ -1,9 +1,7 @@
+"use strict";
+
 const { env } = require("process");
 const { spawn } = require("child_process");
-const tf = require("@tensorflow/tfjs-node");
-const nsfw = require("nsfwjs");
-const path = require("path");
-const sharp = require("sharp");
 
 const {
     actionId,
@@ -24,45 +22,6 @@ const client = new OpenAI({
   apiKey: "ollama",
 });
 
-const urlRegex =
-  /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
-
-tf.enableProdMode();
-
-const model = nsfw.load(
-  new URL(
-    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
-  ).toString()
-);
-async function checkNsfw(url) {
-  console.log(`Check url ${url}`);
-  const pic = sharp(
-    await (
-      await fetch(url, {
-        headers: {
-          Origin: new URL(url).origin,
-          Referer: url,
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0",
-        },
-      })
-    ).arrayBuffer()
-  );
-  const image = tf.node.decodeImage(
-    new Uint8Array(await pic.jpeg().toBuffer()),
-    3
-  );
-  const predictions = await (await model).classify(image);
-  image.dispose();
-  return [
-    ["Porn", "Hentai"].includes(predictions[0].className) ||
-      predictions.some(
-        (e) => ["Porn", "Hentai"].includes(e.className) && e.probability > 0.4
-      ),
-    predictions,
-  ];
-}
-
 /** @param {string} data */
 function graphql(data) {
   return fetch("https://api.github.com/graphql", {
@@ -74,7 +33,6 @@ function graphql(data) {
 
 /** @param {string} labelName @returns {Promise<string>} */
 async function getLabelId(labelName) {
-  console.log(`Getting label ID for ${labelName}`);
   const res = await graphql(
     `
 {
@@ -91,9 +49,6 @@ async function getLabelId(labelName) {
 /** @param {string} labelName */
 async function addLabel(labelName) {
   const labelId = await getLabelId(labelName);
-  console.log(
-    `Adding label ${labelName}: ${labelId} to discussion ${discussionNumber}: ${discussionId}`
-  );
   await graphql(
     `
 mutation {
@@ -117,9 +72,6 @@ function queryEncode(text) {
 
 /** @param {string} body */
 async function addComment(body) {
-  console.log(
-    `Adding comment to discussion ${discussionNumber}: ${discussionId}`
-  );
   await graphql(
     `
 mutation {
@@ -135,9 +87,6 @@ mutation {
 /** @param {string} labelName */
 async function rmLabel(labelName) {
   const labelId = await getLabelId(labelName);
-  console.log(
-    `Removing label ${labelName}: ${labelId} on discussion ${discussionNumber}: ${discussionId}`
-  );
   await graphql(
     `
 mutation {
@@ -150,24 +99,10 @@ mutation {
   );
 }
 
-async function clearLabel() {
-  console.log(
-    `Removing All labels on discussion ${discussionNumber}: ${discussionId}`
-  );
-  await graphql(
-    `
-mutation {
-  clearLabelsFromLabelable(input: {labelableId: "${discussionId}"}) {
-    clientMutationId
-  }
-}`
-  );
-}
-
 function genPrompt() {
-  return `讨论 ID: ${discussionNumber}
-标题: ${discussionTitle}
-论坛内容: ${discussionBody.replace(/\s+/g, " ").trim()}`;
+  return `# ${discussionTitle}
+
+${discussionBody.trim()}`;
 }
 
 async function ai(prompt) {
@@ -186,7 +121,7 @@ async function ai(prompt) {
 
 ### 评价
 
-好|普通|差|无法判断
+高质|普通|低质|风险|无法判断
 
 ### 原因
 
@@ -203,18 +138,18 @@ async function ai(prompt) {
 
 async function aiRating() {
   const task = spawn("ollama", ["serve"]);
-  const msg = genPrompt();
-  const reply = await ai(msg);
+  const prompt = genPrompt();
+  const reply = await ai(prompt);
   task.kill();
   let type = "无法判断";
   if (reply.includes("无法判断")) {
   } else if (reply.includes("风险")) {
     type = "风险";
-  } else if (reply.includes("差")) {
+  } else if (reply.includes("低质")) {
     type = "低质";
   } else if (reply.includes("普通")) {
     type = "普通";
-  } else if (reply.includes("好")) {
+  } else if (reply.includes("高质")) {
     type = "高质";
   }
   addComment(
@@ -225,54 +160,11 @@ async function aiRating() {
 > <details>
 > <summary>Prompt 信息</summary>
 >
-> ${msg.split("\n").join("\n> ")}
+> ${prompt.split("\n").join("\n> ")}
 > </details>`
   );
   addLabel(type);
   rmLabel("待审核");
 }
 
-async function checkContentIsNsfw() {
-  function formatPredictions(predictions) {
-    return predictions
-      .map((p) => `${p.className}: ${p.probability}`)
-      .join("\n  ");
-  }
-
-  const m = discussionBody.match(urlRegex);
-  if (m === null) return;
-  const nsfwUrls = [];
-  for (const url of m) {
-    try {
-      const [nsfw, predictions] = await checkNsfw(url);
-      if (nsfw) {
-        if (nsfwUrls.length === 0) addLabel("NSFW");
-        nsfwUrls.push({ url, predictions });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  if (nsfwUrls.length > 0) {
-    addComment(
-      `发现 NSFW 内容，请尽快整改
-
-${nsfwUrls
-  .map(
-    ({ url, predictions }, i) =>
-      `${i + 1}. ${url}\n  ${formatPredictions(
-        predictions
-      )}\n  ![${url}](${url})\n`
-  )
-  .join()}
-
-> 来自：https://github.com/share121/disblog/actions/runs/${actionId}
-> 如有异议，请在本条评论下方 @${owner}`
-    );
-  }
-}
-
-clearLabel();
-addLabel("待审核");
-checkContentIsNsfw();
 aiRating();

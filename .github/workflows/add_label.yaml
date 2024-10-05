@@ -1,0 +1,27 @@
+name: Add Label
+
+on:
+  discussion:
+    types: [created, edited]
+
+permissions:
+  discussions: write
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Add Label
+        run: node add_label.js
+        env:
+          repo: ${{ github.repository }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          discussionId: ${{ github.event.discussion.node_id }}

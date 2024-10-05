@@ -1,4 +1,4 @@
-name: Discussion Rating
+name: NSFW Rating
 
 on:
   discussion:
@@ -40,13 +40,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install -P
 
-      - name: Install Ollama
-        run: curl -fsSL https://ollama.com/install.sh | sh
-
-      - name: Install Qwen2.5 3B
-        run: ollama pull qwen2.5:3b
-
-      - name: Rating discussion
+      - name: Rating Images
         env:
           actionId: ${{ github.run_id }}
           repo: ${{ github.repository }}

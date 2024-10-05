@@ -1,0 +1,13 @@
+name: Build and Deploy
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.run_id }}

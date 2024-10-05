@@ -43,6 +43,7 @@ jobs:
 
       - name: Rating discussion
         env:
+          actionId: ${{ github.run_id }}
           repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}

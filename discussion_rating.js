@@ -160,7 +160,7 @@ function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
 论坛内容：${discussionBody.replace(/\s+/g, " ")}
-［评论内容：好 or 普通 or 差 or 无法判断］`;
+解读图片并判断文章：［评论内容：好 or 普通 or 差 or 无法判断］`;
 }
 
 async function aiRating() {

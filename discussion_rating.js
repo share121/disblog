@@ -47,24 +47,18 @@ async function checkNsfw(url) {
       })
     ).arrayBuffer()
   );
-  const image1 = tf.node.decodeImage(
+  const image = tf.node.decodeImage(
     new Uint8Array(await pic.jpeg().toBuffer()),
     3
   );
-  const predictions1 = await (await model).classify(image1);
-  image1.dispose();
-  const image2 = tf.node.decodeImage(
-    new Uint8Array(await pic.gif().toBuffer()),
-    3
-  );
-  const predictions2 = await (await model).classify(image1);
-  image2.dispose();
-  console.log({ url, predictions: predictions1 });
+  const predictions = await (await model).classify(image);
+  image.dispose();
   return [
-    ["Porn", "Hentai"].includes(predictions1[0].className) ||
-      ["Porn", "Hentai"].includes(predictions2[0].className),
-    predictions1,
-    predictions2,
+    ["Porn", "Hentai"].includes(predictions[0].className) ||
+      predictions.some(
+        (e) => ["Porn", "Hentai"].includes(e.className) && e.probability > 0.4
+      ),
+    predictions,
   ];
 }
 

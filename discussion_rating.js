@@ -198,9 +198,13 @@ async function checkContentIsNsfw() {
   const m = discussionBody.match(urlRegex);
   if (m === null) return;
   for (const i of m) {
-    if (await isNsfw(i)) {
-      addLabel("NSFW");
-      break;
+    try {
+      if (await isNsfw(i)) {
+        addLabel("NSFW");
+        break;
+      }
+    } catch (e) {
+      console.error(e);
     }
   }
 }

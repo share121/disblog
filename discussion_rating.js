@@ -1,11 +1,12 @@
-const Client  = require("discord.js").Client;
-const env  = require("process").env;
+const Client = require("discord.js").Client;
+const env = require("process").env;
 const axios = require("axios");
 const tf = require("@tensorflow/tfjs-node");
 const nsfw = require("nsfwjs");
+const path = require("path");
 
 tf.enableProdMode();
-const model = nsfw.load("./inception_v3/");
+const model = nsfw.load(path.resolve(__dirname, "inception_v3"));
 
 async function isNsfw(url) {
   const pic = await axios.get(url, { responseType: "arraybuffer" });

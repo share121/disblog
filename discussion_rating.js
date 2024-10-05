@@ -27,13 +27,13 @@ const urlRegex =
 
 tf.enableProdMode();
 
+const model = nsfw.load(
+  new URL(
+    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
+  ).toString()
+);
 async function isNsfw(url) {
   console.log(`Check url ${url}`);
-  const model = nsfw.load(
-    new URL(
-      "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
-    ).toString()
-  );
   const pic = await sharp(
     await (
       await fetch(url, {
@@ -197,13 +197,12 @@ async function aiRating() {
 async function checkContentIsNsfw() {
   const m = discussionBody.match(urlRegex);
   if (m === null) return;
-  const promises = m.map((i) => isNsfw(i));
-  const res = await Promise.allSettled(promises);
-  res
-    .filter((e) => e.status === "rejected")
-    .forEach((e) => console.log(e.reason));
-  const isNsfwRes = res.some((e) => e.value === true);
-  if (isNsfwRes) addLabel("NSFW");
+  for (const i of m) {
+    if (await isNsfw(i)) {
+      addLabel("NSFW");
+      break;
+    }
+  }
 }
 
 clearLabel();

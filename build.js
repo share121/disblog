@@ -1,16 +1,14 @@
 "use strict";
 
-const { env } = require("process"),
-  fs = require("fs").promises,
-  { minify } = require("html-minifier"),
-  [owner, repoName] = env.repo.split("/");
+const { env } = require("process");
+const { promises: fs } = require("fs");
+const { minify } = require("html-minifier");
+const [owner, repoName] = env.repo.split("/");
 
 (async () => {
   try {
     await fs.rm("dist", { force: true, recursive: true });
-  } catch {
-    /**/
-  }
+  } catch {}
   await fs.mkdir("dist");
   await fs.cp("src", "dist", {
     filter: (file) => file !== "src/index.html",

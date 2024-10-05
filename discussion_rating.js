@@ -165,7 +165,7 @@ function formatBody() {
       .replace(/\[.*?]\(.*?\)/g, "")
       .replace(urlRegex, "")
       .replace(/\s+/g, " ")
-      .trim() + `\n文章中的链接：\n${m.join("\n")}`
+      .trim() + `\n文章中的链接:\n${m.join("\n")}`
   );
 }
 

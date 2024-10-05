@@ -2,7 +2,6 @@
   "author": "share121",
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.21.0",
-    "axios": "^1.7.7",
     "discord.js": "^14.16.3",
     "html-minifier": "^4.0.0",
     "nsfwjs": "^4.1.0"
@@ -15,7 +14,6 @@
   "scripts": {},
   "version": "1.0.0",
   "devDependencies": {
-    "@tensorflow/tfjs": "^4.21.0",
     "@types/html-minifier": "^4.0.5"
   }
 }

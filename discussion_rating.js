@@ -223,7 +223,6 @@ async function aiRating() {
     addLabel(type);
     rmLabel("待审核");
   }
-  await client.destroy();
 }
 
 async function checkContentIsNsfw() {
@@ -276,5 +275,6 @@ client.on("ready", async () => {
   } catch (err) {
     console.error(err);
   }
+  client.destroy();
 });
 client.login(discordToken);

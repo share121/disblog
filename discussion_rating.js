@@ -234,15 +234,23 @@ async function aiRating() {
 async function checkContentIsNsfw() {
   const m = discussionBody.match(urlRegex);
   if (m === null) return;
+  const url = [];
   for (const i of m) {
     try {
       if (await isNsfw(i)) {
-        addLabel("NSFW");
-        break;
+        if (url.length === 0) addLabel("NSFW");
+        url.push(i);
       }
     } catch (e) {
       console.error(e);
     }
+  }
+  if (url.length > 0) {
+    addComment(
+      `发现 NSFW 内容，请尽快整改\n\n${url
+        .map((e, i) => `${i + 1}. ![](${e})\n`)
+        .join()}\n\n> 来源：https://github.com/share121/disblog/actions/runs/${actionId}`
+    );
   }
 }
 

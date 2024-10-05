@@ -156,10 +156,21 @@ mutation {
   );
 }
 
+function formatBody() {
+  const m = discussionBody.match(urlRegex);
+  if (m === null) return discussionBody.replace(/\s+/g, " ");
+  return (
+    discussionBody
+      .replace(/!\[.*?]\(.*?\)/g, "")
+      .replace(/\[.*?]\(.*?\)/g, "")
+      .replace(urlRegex, "") + `\n文章中的链接：\n${m.join("\n")}`
+  );
+}
+
 function genPrompt() {
   return `讨论 ID：${discussionNumber}
 标题：${discussionTitle}
-论坛内容：${discussionBody.replace(/\s+/g, " ")}
+论坛内容：${discussionBody}
 解读图片并判断文章：［评论内容：好 or 普通 or 差 or 无法判断］`;
 }
 

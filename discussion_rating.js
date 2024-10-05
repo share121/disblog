@@ -227,7 +227,11 @@ async function aiRating() {
 > [!TIP]
 > 来自：https://github.com/share121/disblog/actions/runs/${actionId}
 > 如有异议，请在本条评论下方 @${owner}
-> <details><summary>Prompt 信息</summary>${msg}</details>`
+> <details>
+> <summary>Prompt 信息</summary>
+>
+> ${msg.split("\n").join("\n> ")}
+> </details>`
   );
   if (type !== undefined) {
     addLabel(type);

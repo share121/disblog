@@ -23,17 +23,17 @@ const {
   discussionNumber = Number(discussionNumberStr);
 
 const urlRegex =
-  /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
+  /((https?|ftp|file):\/?\/?)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
 
 tf.enableProdMode();
-const model = nsfw.load(
-  new URL(
-    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
-  ).toString()
-);
 
 async function isNsfw(url) {
   console.log(`Check url ${url}`);
+  const model = nsfw.load(
+    new URL(
+      "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
+    ).toString()
+  );
   const pic = await axios.get(url, { responseType: "arraybuffer" });
   const image = tf.node.decodeImage(pic.data, 3);
   const predictions = await (await model).classify(image);

@@ -9,4 +9,3 @@ accelerate
 av
 modelscope
 optimum
-auto-gptq

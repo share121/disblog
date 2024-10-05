@@ -25,14 +25,14 @@ const urlRegex =
   /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
 
 tf.enableProdMode();
+const model = nsfw.load(
+  new URL(
+    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
+  ).toString()
+);
 
 async function isNsfw(url) {
   console.log(`Check url ${url}`);
-  const model = nsfw.load(
-    new URL(
-      "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
-    ).toString()
-  );
   const pic = await (
     await fetch(url, {
       headers: {
@@ -43,7 +43,7 @@ async function isNsfw(url) {
       },
     })
   ).arrayBuffer();
-  const image = tf.node.decodeImage(pic.data, 3);
+  const image = tf.node.decodeImage(new Uint8Array(pic), 3);
   const predictions = await (await model).classify(image);
   image.dispose();
   console.log({ url, predictions });

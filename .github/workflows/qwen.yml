@@ -21,4 +21,4 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
       - name: Run Qwen AI
-        run: python main.py
+        run: python qwen.py

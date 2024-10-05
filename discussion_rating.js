@@ -157,19 +157,6 @@ mutation {
   );
 }
 
-function formatBody() {
-  const m = discussionBody.match(urlRegex);
-  if (m === null) return discussionBody.replace(/\s+/g, " ");
-  return (
-    discussionBody
-      .replace(/!\[.*?]\(.*?\)/g, "")
-      .replace(/\[.*?]\(.*?\)/g, "")
-      .replace(urlRegex, "")
-      .replace(/\s+/g, " ")
-      .trim() + `\n文章中的链接:\n${m.join("\n")}`
-  );
-}
-
 function genPrompt() {
   const m = discussionBody.match(urlRegex);
   if (m === null) {
@@ -224,7 +211,6 @@ async function aiRating() {
   addComment(
     `${reply}
 
-> [!TIP]
 > 来自：https://github.com/share121/disblog/actions/runs/${actionId}
 > 如有异议，请在本条评论下方 @${owner}
 > <details>
@@ -266,7 +252,6 @@ ${nsfwUrls
   )
   .join()}
 
-> [!TIP]
 > 来自：https://github.com/share121/disblog/actions/runs/${actionId}
 > 如有异议，请在本条评论下方 @${owner}`
     );

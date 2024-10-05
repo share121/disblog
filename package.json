@@ -15,6 +15,7 @@
   "scripts": {},
   "version": "1.0.0",
   "devDependencies": {
+    "@tensorflow/tfjs": "^4.21.0",
     "@types/html-minifier": "^4.0.5"
   }
 }

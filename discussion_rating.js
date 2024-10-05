@@ -1,6 +1,5 @@
 const Client = require("discord.js").Client;
 const env = require("process").env;
-const axios = require("axios");
 const tf = require("@tensorflow/tfjs-node");
 const nsfw = require("nsfwjs");
 const path = require("path");
@@ -23,7 +22,7 @@ const {
   discussionNumber = Number(discussionNumberStr);
 
 const urlRegex =
-  /((https?|ftp|file):\/?\/?)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
+  /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
 
 tf.enableProdMode();
 
@@ -34,7 +33,16 @@ async function isNsfw(url) {
       "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
     ).toString()
   );
-  const pic = await axios.get(url, { responseType: "arraybuffer" });
+  const pic = await (
+    await fetch(url, {
+      headers: {
+        Origin: new URL(url).origin,
+        Referer: url,
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0",
+      },
+    })
+  ).arrayBuffer();
   const image = tf.node.decodeImage(pic.data, 3);
   const predictions = await (await model).classify(image);
   image.dispose();

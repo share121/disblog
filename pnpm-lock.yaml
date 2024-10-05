@@ -24,6 +24,9 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(@tensorflow/tfjs@4.21.0(seedrandom@3.0.5))
     devDependencies:
+      '@tensorflow/tfjs':
+        specifier: ^4.21.0
+        version: 4.21.0(seedrandom@3.0.5)
       '@types/html-minifier':
         specifier: ^4.0.5
         version: 4.0.5

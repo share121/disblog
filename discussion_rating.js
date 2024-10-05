@@ -163,15 +163,18 @@ function formatBody() {
     discussionBody
       .replace(/!\[.*?]\(.*?\)/g, "")
       .replace(/\[.*?]\(.*?\)/g, "")
-      .replace(urlRegex, "") + `\n文章中的链接：\n${m.join("\n")}`
+      .replace(urlRegex, "")
+      .replace(/\s+/g, " ")
+      .trim() + `\n文章中的链接：\n${m.join("\n")}`
   );
 }
 
 function genPrompt() {
-  return `讨论 ID：${discussionNumber}
-标题：${discussionTitle}
-论坛内容：${formatBody()}
-解读图片并判断文章：［评论内容：好 or 普通 or 差 or 无法判断］`;
+  return `讨论 ID: ${discussionNumber}
+标题: ${discussionTitle}
+论坛内容: ${formatBody()}
+[评论内容: 好 or 普通 or 差 or 无法判断]
+[要求: 解读文章中的链接和论坛内容，并给出评论内容]`;
 }
 
 async function aiRating() {

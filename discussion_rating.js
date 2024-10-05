@@ -5,7 +5,7 @@ const tf = require("@tensorflow/tfjs-node");
 const nsfw = require("nsfwjs");
 const path = require("path");
 
-tf.enableProdMode();
+// tf.enableProdMode();
 const model = nsfw.load(
   new URL(
     "file:" + path.resolve(__dirname, "inception_v3") + path.sep

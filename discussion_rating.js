@@ -6,7 +6,7 @@ const nsfw = require("nsfwjs");
 const path = require("path");
 
 tf.enableProdMode();
-const model = nsfw.load(path.resolve(__dirname, "inception_v3"));
+const model = nsfw.load(path.resolve(__dirname, "inception_v3") + path.sep);
 
 async function isNsfw(url) {
   const pic = await axios.get(url, { responseType: "arraybuffer" });

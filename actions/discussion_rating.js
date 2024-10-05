@@ -1,11 +1,17 @@
-const Client = require("discord.js").Client;
-const env = require("process").env;
+"use strict";
+
+require("discord.js");
+const { env } = require("process");
 const tf = require("@tensorflow/tfjs-node");
 const nsfw = require("nsfwjs");
 const path = require("path");
-const sharp = require("sharp");
-
-const {
+const { Client } = require("discord.js");
+const client = new Client({
+    intents: ["Guilds", "GuildMessages", "MessageContent"],
+  }),
+  discussionNumber = Number(discussionNumberStr),
+  sharp = require("sharp"),
+  {
     repo,
     githubToken,
     discussionId,
@@ -17,39 +23,34 @@ const {
     targetUserId,
   } = env,
   [owner, repoName] = repo.split("/"),
-  client = new Client({
-    intents: ["Guilds", "GuildMessages", "MessageContent"],
-  }),
-  discussionNumber = Number(discussionNumberStr);
-
-const urlRegex =
-  /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
+  urlRegex =
+    /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
 
 tf.enableProdMode();
 
 const model = nsfw.load(
   new URL(
-    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
+    `file:${path.resolve(__dirname, "mobilenet_v2")}${path.sep}`
   ).toString()
 );
 async function isNsfw(url) {
   console.log(`Check url ${url}`);
   const pic = await sharp(
-    await (
-      await fetch(url, {
-        headers: {
-          Origin: new URL(url).origin,
-          Referer: url,
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0",
-        },
-      })
-    ).arrayBuffer()
-  )
-    .png()
-    .toBuffer();
-  const image = tf.node.decodeImage(new Uint8Array(pic), 3);
-  const predictions = await (await model).classify(image);
+      await (
+        await fetch(url, {
+          headers: {
+            Origin: new URL(url).origin,
+            Referer: url,
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0",
+          },
+        })
+      ).arrayBuffer()
+    )
+      .png()
+      .toBuffer(),
+    image = tf.node.decodeImage(new Uint8Array(pic), 3),
+    predictions = await (await model).classify(image);
   image.dispose();
   console.log({ url, predictions });
   return ["Porn", "Hentai"].includes(predictions[0].className);
@@ -170,17 +171,19 @@ async function aiRating() {
   await channel.send(msg);
   console.log("Waiting for reply...");
   const replyList = await channel.awaitMessages({
-    filter: (m) => m.author.id === targetUserId && m.channelId === channelId,
-    max: 1,
-    time: 60_000,
-  });
-  const reply = replyList.first().content;
+      filter: (m) => m.author.id === targetUserId && m.channelId === channelId,
+      max: 1,
+      time: 60_000,
+    }),
+    reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
   addComment(reply);
-  let type = undefined;
+  let type;
   if (reply.includes("风险")) {
     type = "风险";
-  } else if (reply.includes("无法判断") || reply.includes("差")) {
+  } else if (reply.includes("无法判断")) {
+    type = "无法判断";
+  } else if (reply.includes("差") || reply.includes("坏")) {
     type = "低质";
   } else if (reply.includes("普通")) {
     type = "普通";
@@ -196,7 +199,9 @@ async function aiRating() {
 
 async function checkContentIsNsfw() {
   const m = discussionBody.match(urlRegex);
-  if (m === null) return;
+  if (m === null) {
+    return;
+  }
   for (const i of m) {
     try {
       if (await isNsfw(i)) {

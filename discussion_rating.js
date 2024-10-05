@@ -28,8 +28,9 @@ const urlRegex =
 tf.enableProdMode();
 const model = nsfw.load(
   new URL(
-    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
-  ).toString()
+    "file:" + path.resolve(__dirname, "inception_v3") + path.sep
+  ).toString(),
+  { type: "graph" }
 );
 
 async function isNsfw(url) {

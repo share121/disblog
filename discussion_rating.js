@@ -33,7 +33,7 @@ const model = nsfw.load(
     "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
   ).toString()
 );
-async function isNsfw(url) {
+async function checkNsfw(url) {
   console.log(`Check url ${url}`);
   const pic = await sharp(
     await (
@@ -53,7 +53,7 @@ async function isNsfw(url) {
   const predictions = await (await model).classify(image);
   image.dispose();
   console.log({ url, predictions });
-  return ["Porn", "Hentai"].includes(predictions[0].className);
+  return [["Porn", "Hentai"].includes(predictions[0].className), predictions];
 }
 
 /** @param {string} data */
@@ -222,7 +222,12 @@ async function aiRating() {
     type = "高质";
   }
   addComment(
-    `${reply}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}\n> 如有异议，请在本条评论下方 @${owner}`
+    `${reply}
+
+> [!TIP]
+> 来自：https://github.com/share121/disblog/actions/runs/${actionId}
+> 如有异议，请在本条评论下方 @${owner}
+> <details><summary>Prompt 信息</summary>${msg}</details>`
   );
   if (type !== undefined) {
     addLabel(type);
@@ -234,22 +239,32 @@ async function aiRating() {
 async function checkContentIsNsfw() {
   const m = discussionBody.match(urlRegex);
   if (m === null) return;
-  const url = [];
-  for (const i of m) {
+  const nsfwUrls = [];
+  for (const url of m) {
     try {
-      if (await isNsfw(i)) {
-        if (url.length === 0) addLabel("NSFW");
-        url.push(i);
+      const [nsfw, predictions] = await checkNsfw(url);
+      if (nsfw) {
+        if (nsfwUrls.length === 0) addLabel("NSFW");
+        nsfwUrls.push({ i: url, predictions });
       }
     } catch (e) {
       console.error(e);
     }
   }
-  if (url.length > 0) {
+  if (nsfwUrls.length > 0) {
     addComment(
-      `发现 NSFW 内容，请尽快整改\n\n${url
-        .map((e, i) => `${i + 1}. ${e}\n  ![${e}](${e})\n`)
-        .join()}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}\n> 如有异议，请在本条评论下方 @${owner}`
+      `发现 NSFW 内容，请尽快整改
+
+${nsfwUrls
+  .map(
+    ({ url, predictions }, i) =>
+      `${i + 1}. ${url}\n  ${predictions}\n  ![${url}](${url})\n`
+  )
+  .join()}
+
+> [!TIP]
+> 来自：https://github.com/share121/disblog/actions/runs/${actionId}
+> 如有异议，请在本条评论下方 @${owner}`
     );
   }
 }

@@ -1,6 +1,6 @@
-const env = requir("process").env;
-const fs = requir("fs").promise;
-const minify = requir("html-minifier").minify;
+const env = require("process").env;
+const fs = require("fs").promise;
+const minify = require("html-minifier").minify;
 const [owner, repoName] = env.repo.split("/");
 
 (async () => {

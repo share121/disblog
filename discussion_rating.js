@@ -248,8 +248,8 @@ async function checkContentIsNsfw() {
   if (url.length > 0) {
     addComment(
       `发现 NSFW 内容，请尽快整改\n\n${url
-        .map((e, i) => `${i + 1}. ![](${e})\n`)
-        .join()}\n\n> 来源：https://github.com/share121/disblog/actions/runs/${actionId}`
+        .map((e, i) => `${i + 1}. ${e}\n  ![${e}](${e})\n`)
+        .join()}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}`
     );
   }
 }

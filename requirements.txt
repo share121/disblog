@@ -3,4 +3,3 @@ torch
 qwen-vl-utils
 torchvision
 accelerate
-flash_attn

@@ -235,7 +235,7 @@ async function checkContentIsNsfw() {
       const [nsfw, predictions] = await checkNsfw(url);
       if (nsfw) {
         if (nsfwUrls.length === 0) addLabel("NSFW");
-        nsfwUrls.push({ i: url, predictions });
+        nsfwUrls.push({ url, predictions });
       }
     } catch (e) {
       console.error(e);
@@ -248,7 +248,9 @@ async function checkContentIsNsfw() {
 ${nsfwUrls
   .map(
     ({ url, predictions }, i) =>
-      `${i + 1}. ${url}\n  ${predictions}\n  ![${url}](${url})\n`
+      `${i + 1}. ${url}\n  ${JSON.stringify(
+        predictions
+      )}\n  ![${url}](${url})\n`
   )
   .join()}
 

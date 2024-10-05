@@ -209,9 +209,6 @@ async function aiRating() {
   });
   const reply = replyList.first().content;
   await channel.send(`收到回复：${reply}`);
-  addComment(
-    `${reply}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}\n> 如有异议，请在本条评论下方 @share121`
-  );
   let type = undefined;
   if (reply.includes("无法判断")) {
     type = "无法判断";
@@ -224,6 +221,9 @@ async function aiRating() {
   } else if (reply.includes("好")) {
     type = "高质";
   }
+  addComment(
+    `${reply}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}\n> 如有异议，请在本条评论下方 @${owner}`
+  );
   if (type !== undefined) {
     addLabel(type);
     rmLabel("待审核");
@@ -249,7 +249,7 @@ async function checkContentIsNsfw() {
     addComment(
       `发现 NSFW 内容，请尽快整改\n\n${url
         .map((e, i) => `${i + 1}. ${e}\n  ![${e}](${e})\n`)
-        .join()}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}\n> 如有异议，请在本条评论下方 @share121 `
+        .join()}\n\n> 来自：https://github.com/share121/disblog/actions/runs/${actionId}\n> 如有异议，请在本条评论下方 @${owner}`
     );
   }
 }

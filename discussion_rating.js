@@ -33,6 +33,7 @@ const model = nsfw.load(
 );
 
 async function isNsfw(url) {
+  console.log(`Check url ${url}`);
   const pic = await axios.get(url, { responseType: "arraybuffer" });
   const image = tf.node.decodeImage(pic.data, 3);
   const predictions = await (await model).classify(image);

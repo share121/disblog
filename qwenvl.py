@@ -41,7 +41,9 @@ messages = [
 
 # Preparation for inference
 text = processor.apply_chat_template(
-    messages, tokenize=False, add_generation_prompt=True
+    messages,
+    tokenize=False,
+    add_generation_prompt=True,
 )
 image_inputs, video_inputs = process_vision_info(messages)
 inputs = processor(

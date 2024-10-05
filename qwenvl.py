@@ -53,7 +53,7 @@ inputs = processor(
     padding=True,
     return_tensors="pt",
 )
-inputs = inputs.to("cpu")
+inputs = inputs.to("cuda")
 
 # Inference: Generation of the output
 generated_ids = model.generate(**inputs, max_new_tokens=128)

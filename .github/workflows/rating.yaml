@@ -82,7 +82,9 @@ jobs:
         run: curl -fsSL https://ollama.com/install.sh | sh
 
       - name: Set Ollama environment variables
-        run: export OLLAMA_MODELS="$(pwd)/ollama-models"
+        run: |
+          export OLLAMA_MODELS="$(pwd)/ollama-models"
+          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> $GITHUB_ENV
 
       - name: Cache Ollama models
         uses: actions/cache@v4
@@ -129,7 +131,9 @@ jobs:
         run: curl -fsSL https://ollama.com/install.sh | sh
 
       - name: Set Ollama environment variables
-        run: export OLLAMA_MODELS="$(pwd)/ollama-models"
+        run: |
+          export OLLAMA_MODELS="$(pwd)/ollama-models"
+          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> $GITHUB_ENV
 
       - name: Cache Ollama models
         uses: actions/cache@v4

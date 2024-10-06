@@ -132,7 +132,7 @@ async function ai(prompt) {
       },
       { role: "user", content: prompt },
     ],
-    model: "qwen2.5:7b",
+    model: "qwen2.5:3b",
   });
   return chatCompletion.choices[0].message.content;
 }

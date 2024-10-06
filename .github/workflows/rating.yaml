@@ -8,43 +8,6 @@ permissions:
   discussions: write
 
 jobs:
-  discussion-rating:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install -P
-
-      - name: Install Ollama
-        run: curl -fsSL https://ollama.com/install.sh | sh
-
-      - name: Install Qwen2.5 3B
-        run: ollama pull qwen2.5:3b
-
-      - name: Rating discussion
-        env:
-          actionId: ${{ github.run_id }}
-          repo: ${{ github.repository }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          discussionId: ${{ github.event.discussion.node_id }}
-          discussionTitle: ${{ github.event.discussion.title }}
-          discussionBody: ${{ github.event.discussion.body }}
-        run: node actions/rating.js
-
   add-label:
     runs-on: ubuntu-latest
     steps:
@@ -92,6 +55,43 @@ jobs:
           discussionId: ${{ github.event.discussion.node_id }}
           discussionBody: ${{ github.event.discussion.body }}
         run: node actions/nsfw_rating.js
+
+  discussion-rating:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install -P
+
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Install Qwen2.5 3B
+        run: ollama pull qwen2.5:3b
+
+      - name: Rating discussion
+        env:
+          actionId: ${{ github.run_id }}
+          repo: ${{ github.repository }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          discussionId: ${{ github.event.discussion.node_id }}
+          discussionTitle: ${{ github.event.discussion.title }}
+          discussionBody: ${{ github.event.discussion.body }}
+        run: node actions/rating.js
 
   summary:
     runs-on: ubuntu-latest

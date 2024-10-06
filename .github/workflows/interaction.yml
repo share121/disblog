@@ -1,0 +1,46 @@
+name: Interaction
+
+on:
+  discussion_comment:
+    types: [created, edited]
+
+permissions:
+  discussions: write
+
+jobs:
+  interaction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install -P
+
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Install Qwen2.5 0.5B
+        run: ollama pull qwen2.5:0.5b
+
+      - name: Interaction
+        env:
+          actionId: ${{ github.run_id }}
+          owner: ${{ github.repository_owner }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          discussionId: ${{ github.event.discussion.node_id }}
+          commentId: ${{ github.event.comment.node_id }}
+          commentBody: ${{ github.event.comment.body }}
+        run: node actions/interaction.js

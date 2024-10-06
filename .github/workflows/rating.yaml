@@ -120,7 +120,7 @@ jobs:
       - name: Install Qwen2.5 7B
         run: ollama pull qwen2.5:7b
 
-      - name: Rating discussion
+      - name: Summary discussion
         env:
           actionId: ${{ github.run_id }}
           owner: ${{ github.repository_owner }}

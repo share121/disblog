@@ -32,12 +32,6 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
-      - name: Cache Ollama models
-        uses: actions/cache@v4
-        with:
-          path: /usr/share/ollama/.ollama/models
-          key: ${{ runner.os }}-ollama-models
-
       - name: Install Qwen2.5 7B
         run: ollama pull qwen2.5:7b
 

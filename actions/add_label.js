@@ -2,7 +2,7 @@
 
 const { env } = require("process");
 const { githubToken, discussionId, repo } = env,
-  [repoName, owner] = repo.split("/");
+  [owner, repoName] = repo.split("/");
 
 /** @param {string} data */
 function graphql(data) {

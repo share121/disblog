@@ -141,7 +141,7 @@ ${nsfwUrls
         predictions
       )}\n  ![${url}](${url})\n`
   )
-  .join()}
+  .join("")}
 
 > 来自：https://github.com/share121/disblog/actions/runs/${actionId}
 > 如有异议，请在本条评论下方 @${owner}`

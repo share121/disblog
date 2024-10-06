@@ -20,7 +20,7 @@ jobs:
           node-version: 20
 
       - name: Add Label
-        run: node add_label.js
+        run: node actions/add_label.js
         env:
           repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}

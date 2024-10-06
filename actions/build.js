@@ -8,7 +8,9 @@ const [owner, repoName] = env.repo.split("/");
 (async () => {
   try {
     await fs.rm("dist", { force: true, recursive: true });
-  } catch {}
+  } catch {
+    //
+  }
   await fs.mkdir("dist");
   await fs.cp("src", "dist", {
     filter: (file) => file !== "src/index.html",

@@ -47,4 +47,4 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
           discussionBody: ${{ github.event.discussion.body }}
-        run: node nsfw_rating.js
+        run: node actions/nsfw_rating.js

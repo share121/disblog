@@ -10,11 +10,8 @@ const {
     discussionId,
     discussionTitle,
     discussionBody,
-    discussionNumber: discussionNumberStr,
   } = env,
-  [owner, repoName] = repo.split("/"),
-  discussionNumber = Number(discussionNumberStr);
-
+  [owner, repoName] = repo.split("/");
 const OpenAI = require("openai");
 
 const client = new OpenAI({
@@ -143,6 +140,7 @@ async function aiRating() {
   task.kill();
   let type = "无法判断";
   if (reply.includes("无法判断")) {
+    //
   } else if (reply.includes("风险")) {
     type = "风险";
   } else if (reply.includes("低质")) {

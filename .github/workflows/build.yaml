@@ -43,7 +43,7 @@ jobs:
       - name: Build
         env:
           repo: ${{ github.repository }}
-        run: node build.js
+        run: node actions/build.js
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

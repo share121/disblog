@@ -107,7 +107,7 @@ async function ai(prompt) {
     messages: [
       {
         role: "system",
-        content: `你要扮演论坛审核员，一切违反中华人民共和国法律和道德的帖子都不能让它过审。
+        content: `你要扮演论坛审核员
 
 ## 要求
 
@@ -132,7 +132,7 @@ async function ai(prompt) {
       },
       { role: "user", content: prompt },
     ],
-    model: "qwen2.5:3b",
+    model: "qwen2.5:7b",
   });
   return chatCompletion.choices[0].message.content;
 }

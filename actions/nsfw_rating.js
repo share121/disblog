@@ -16,7 +16,7 @@ tf.enableProdMode();
 
 const model = nsfw.load(
   new URL(
-    "file:" + path.resolve(__dirname, "mobilenet_v2") + path.sep
+    "file:" + path.resolve(__dirname, "../mobilenet_v2") + path.sep
   ).toString()
 );
 async function checkNsfw(url) {

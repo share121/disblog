@@ -36,6 +36,7 @@ async function getLabelId(labelName) {
   }
 }`
   );
+  console.log(res);
   return res.data.repository.label.id;
 }
 

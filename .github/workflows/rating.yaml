@@ -80,8 +80,8 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
-      - name: Install Qwen2.5 0.5B
-        run: ollama pull qwen2.5:0.5b
+      - name: Install Qwen2.5 3B
+        run: ollama pull qwen2.5:3b
 
       - name: Rating discussion
         env:
@@ -117,8 +117,8 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
-      - name: Install Qwen2.5 0.5B
-        run: ollama pull qwen2.5:0.5b
+      - name: Install Qwen2.5 3B
+        run: ollama pull qwen2.5:3b
 
       - name: Summary discussion
         env:

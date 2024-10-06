@@ -6,6 +6,7 @@ const OpenAI = require("openai");
 
 const {
   actionId,
+  jobId,
   githubToken,
   discussionId,
   discussionTitle,
@@ -61,17 +62,23 @@ async function ai(prompt) {
     messages: [
       {
         role: "system",
-        content: `你要总结帖子内容
+        content: `你是 ${owner} 的 AI 助手，你要帮助 ${owner} 总结帖子内容。
 
-## 要求
+# 要求
 
 1. 多加点 emoji 表情
 2. 分点总结
+
+# 回答格式
+
+## 总结
+
+## 优化建议
 `,
       },
       { role: "user", content: prompt },
     ],
-    model: "qwen2.5:3b",
+    model: "qwen2.5:7b",
   });
   return chatCompletion.choices[0].message.content;
 }
@@ -84,13 +91,9 @@ async function aiSummary() {
   addComment(
     `${reply}
 
-> 来自：https://github.com/share121/disblog/actions/runs/${actionId}
-> 如有异议，请在本条评论下方 @${owner}
-> <details>
-> <summary>Prompt 信息</summary>
->
-> ${prompt.split("\n").join("\n> ")}
-> </details>`
+> 来自：https://github.com/share121/disblog/actions/runs/${actionId}/job/${jobId}
+> 如有异议，请在本条评论下方 \`@${owner}\`
+`
   );
 }
 

@@ -6,7 +6,8 @@ const nsfw = require("nsfwjs");
 const path = require("path");
 const sharp = require("sharp");
 
-const { actionId, repo, githubToken, discussionId, discussionBody } = env,
+const { actionId, repo, githubToken, discussionId, discussionBody, jobId } =
+    env,
   [owner, repoName] = repo.split("/");
 
 const urlRegex =
@@ -141,10 +142,11 @@ ${nsfwUrls
         predictions
       )}\n  ![${url}](${url})\n`
   )
-  .join()}
+  .join("")}
 
-> 来自：https://github.com/share121/disblog/actions/runs/${actionId}
-> 如有异议，请在本条评论下方 @${owner}`
+> 来自：https://github.com/share121/disblog/actions/runs/${actionId}/job/${jobId}
+> 如有异议，请在本条评论下方 \`@${owner}\`
+`
     );
   }
 }

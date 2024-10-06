@@ -6,6 +6,7 @@ const OpenAI = require("openai");
 
 const {
     actionId,
+    jobId,
     repo,
     githubToken,
     discussionId,
@@ -107,31 +108,32 @@ async function ai(prompt) {
     messages: [
       {
         role: "system",
-        content: `你要扮演论坛审核员，一切违反中华人民共和国法律和道德的帖子都不能让它过审。
+        content: `你是 ${owner} 的 AI 助手，你要帮助 ${owner} 在他的 ${repoName} 论坛上审核帖子。
 
-## 要求
+# 要求
 
-1. 先说结论，再分析原因
-2. 分点说明哪些地方违法了哪些法律，哪些地方可能会有风险
+1. 评价要明确，不能多选。
+2. 先说结论，再分析原因。
+3. 原因要分点说明，先说原文内容，后说具体原因。
+4. 对于违规的帖子要指出违规的地方、原因和改进措施；对于优质的帖子要指出优点、并给予鼓励。
+5. 论坛的风气比较开放，除非是明确违规的帖子，否则不要轻易打低分。
+6. 少看缺点，多看优点。
+7. 增加普通和高质的权重。
 
-## 回答格式
+# 回答格式
 
-### 评价
+## 评价
 
-高质|普通|低质|风险|无法判断
+高质 or 普通 or 低质 or 风险 or 无法判断
 
-### 原因
-
-1. **原文内容**：原因
-2. **原文内容**：原因
+## 原因
 
 ## 总结
-
 `,
       },
       { role: "user", content: prompt },
     ],
-    model: "qwen2.5:3b",
+    model: "qwen2.5:7b",
   });
   return chatCompletion.choices[0].message.content;
 }
@@ -141,28 +143,22 @@ async function aiRating() {
   const prompt = genPrompt();
   const reply = await ai(prompt);
   task.kill();
-  let type = "无法判断";
-  if (reply.includes("无法判断")) {
-    //
-  } else if (reply.includes("风险")) {
-    type = "风险";
-  } else if (reply.includes("低质")) {
-    type = "低质";
-  } else if (reply.includes("普通")) {
-    type = "普通";
-  } else if (reply.includes("高质")) {
-    type = "高质";
-  }
+  const type =
+    [
+      { type: "无法判断", pos: reply.indexOf("无法判断") },
+      { type: "风险", pos: reply.indexOf("风险") },
+      { type: "低质", pos: reply.indexOf("低质") },
+      { type: "普通", pos: reply.indexOf("普通") },
+      { type: "高质", pos: reply.indexOf("高质") },
+    ]
+      .filter((e) => e.pos !== -1)
+      .sort((a, b) => a.pos - b.pos)[0]?.type ?? "无法判断";
   addComment(
     `${reply}
 
-> 来自：https://github.com/share121/disblog/actions/runs/${actionId}
-> 如有异议，请在本条评论下方 @${owner}
-> <details>
-> <summary>Prompt 信息</summary>
->
-> ${prompt.split("\n").join("\n> ")}
-> </details>`
+> 来自：https://github.com/share121/disblog/actions/runs/${actionId}/job/${jobId}
+> 如有异议，请在本条评论下方 \`@${owner}\`
+`
   );
   addLabel(type);
   rmLabel("待审核");

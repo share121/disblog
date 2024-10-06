@@ -38,6 +38,7 @@ jobs:
       - name: Interaction
         env:
           actionId: ${{ github.run_id }}
+          jobId: ${{ github.job}}
           owner: ${{ github.repository_owner }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}

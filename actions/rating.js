@@ -6,6 +6,7 @@ const OpenAI = require("openai");
 
 const {
     actionId,
+    jobId,
     repo,
     githubToken,
     discussionId,
@@ -236,7 +237,7 @@ async function aiRating() {
   addComment(
     `${reply}
 
-> 来自：https://github.com/share121/disblog/actions/runs/${actionId}
+> 来自：https://github.com/share121/disblog/actions/runs/${actionId}/job/${jobId}
 > 如有异议，请在本条评论下方 \`@${owner}\`
 `
   );

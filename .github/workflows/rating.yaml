@@ -81,16 +81,10 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
-      - name: Set Ollama environment variables
-        run: |
-          export OLLAMA_MODELS="$(pwd)/ollama-models"
-          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> ~/.bashrc
-          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> $GITHUB_ENV
-
       - name: Cache Ollama models
         uses: actions/cache@v4
         with:
-          path: ${{ env.OLLAMA_MODELS }}
+          path: /usr/share/ollama/.ollama/models
           key: ${{ runner.os }}-ollama-models
 
       - name: Install Qwen2.5 7B
@@ -131,28 +125,22 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
-      - name: Set Ollama environment variables
-        run: |
-          export OLLAMA_MODELS="$(pwd)/ollama-models"
-          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> ~/.bashrc
-          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> $GITHUB_ENV
-
       - name: Cache Ollama models
         uses: actions/cache@v4
         with:
-          path: ${{ env.OLLAMA_MODELS }}
+          path: /usr/share/ollama/.ollama/models
           key: ${{ runner.os }}-ollama-models
 
       - name: Install Qwen2.5 7B
         run: ollama pull qwen2.5:7b
 
-      - name: Summary discussion
-        env:
-          actionId: ${{ github.run_id }}
-          jobId: ${{ github.job}}
-          owner: ${{ github.repository_owner }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          discussionId: ${{ github.event.discussion.node_id }}
-          discussionTitle: ${{ github.event.discussion.title }}
-          discussionBody: ${{ github.event.discussion.body }}
-        run: node actions/summary.js
+      # - name: Summary discussion
+      #   env:
+      #     actionId: ${{ github.run_id }}
+      #     jobId: ${{ github.job}}
+      #     owner: ${{ github.repository_owner }}
+      #     githubToken: ${{ secrets.GITHUB_TOKEN }}
+      #     discussionId: ${{ github.event.discussion.node_id }}
+      #     discussionTitle: ${{ github.event.discussion.title }}
+      #     discussionBody: ${{ github.event.discussion.body }}
+      #   run: node actions/summary.js

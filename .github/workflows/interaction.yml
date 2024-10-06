@@ -43,4 +43,5 @@ jobs:
           discussionId: ${{ github.event.discussion.node_id }}
           commentId: ${{ github.event.comment.node_id }}
           commentBody: ${{ github.event.comment.body }}
+          commentAuthor: ${{ github.event.comment.user.login }}
         run: node actions/interaction.js

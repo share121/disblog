@@ -10,8 +10,7 @@ const { actionId, repo, githubToken, discussionId, discussionBody, jobId } =
     env,
   [owner, repoName] = repo.split("/");
 
-const urlRegex =
-  /(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi;
+const urlRegex = /https?:\/\/\S+/gi;
 
 tf.enableProdMode();
 

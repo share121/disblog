@@ -14,6 +14,7 @@ const {
     discussionBody,
   } = env,
   [owner, repoName] = repo.split("/");
+const urlRegex = /https?:\/\/\S+/gi;
 
 const client = new OpenAI({
   baseURL: "http://localhost:11434/v1/",
@@ -100,7 +101,7 @@ mutation {
 function genPrompt() {
   return `# ${discussionTitle}
 
-${discussionBody.trim()}`;
+${discussionBody.replace(urlRegex, "").trim()}`;
 }
 
 async function ai(prompt) {

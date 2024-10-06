@@ -84,6 +84,7 @@ jobs:
       - name: Set Ollama environment variables
         run: |
           export OLLAMA_MODELS="$(pwd)/ollama-models"
+          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> ~/.bashrc
           echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> $GITHUB_ENV
 
       - name: Cache Ollama models
@@ -133,6 +134,7 @@ jobs:
       - name: Set Ollama environment variables
         run: |
           export OLLAMA_MODELS="$(pwd)/ollama-models"
+          echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> ~/.bashrc
           echo "OLLAMA_MODELS=\"$(pwd)/ollama-models\"" >> $GITHUB_ENV
 
       - name: Cache Ollama models

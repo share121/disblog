@@ -140,18 +140,16 @@ async function aiRating() {
   const prompt = genPrompt();
   const reply = await ai(prompt);
   task.kill();
-  let type = "无法判断";
-  if (reply.includes("无法判断")) {
-    //
-  } else if (reply.includes("风险")) {
-    type = "风险";
-  } else if (reply.includes("低质")) {
-    type = "低质";
-  } else if (reply.includes("普通")) {
-    type = "普通";
-  } else if (reply.includes("高质")) {
-    type = "高质";
-  }
+  const type =
+    [
+      { type: "无法判断", pos: reply.indexOf("无法判断") },
+      { type: "风险", pos: reply.indexOf("风险") },
+      { type: "低质", pos: reply.indexOf("低质") },
+      { type: "普通", pos: reply.indexOf("普通") },
+      { type: "高质", pos: reply.indexOf("高质") },
+    ]
+      .filter((e) => e.pos !== -1)
+      .sort((a, b) => a.pos - b.pos)[0]["type"] ?? "无法判断";
   addComment(
     `${reply}
 

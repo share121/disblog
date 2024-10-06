@@ -125,6 +125,8 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
+      - run: echo $OLLAMA_INSTALL_DIR
+
       - name: Cache Ollama models
         uses: actions/cache@v4
         with:

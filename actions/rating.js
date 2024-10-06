@@ -232,7 +232,7 @@ async function aiRating() {
       { type: "高质", pos: reply.indexOf("高质") },
     ]
       .filter((e) => e.pos !== -1)
-      .sort((a, b) => a.pos - b.pos)[0]["type"] ?? "无法判断";
+      .sort((a, b) => a.pos - b.pos)[0]?.type ?? "无法判断";
   addComment(
     `${reply}
 

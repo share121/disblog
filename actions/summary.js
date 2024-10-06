@@ -67,6 +67,13 @@ async function ai(prompt) {
 
 1. 多加点 emoji 表情
 2. 分点总结
+
+## 回答格式
+
+### 总结
+
+### 优化建议
+
 `,
       },
       { role: "user", content: prompt },

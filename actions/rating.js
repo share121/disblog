@@ -157,7 +157,7 @@ async function aiRating() {
     `${reply}
 
 > 来自：https://github.com/share121/disblog/actions/runs/${actionId}
-> 如有异议，请在本条评论下方 @${owner}
+> 如有异议，请在本条评论下方 \`@${owner}\`
 `
   );
   addLabel(type);

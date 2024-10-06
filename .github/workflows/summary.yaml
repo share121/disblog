@@ -49,9 +49,9 @@ jobs:
       - name: Rating discussion
         env:
           actionId: ${{ github.run_id }}
-          repo: ${{ github.repository }}
+          owner: ${{ github.repository_owner }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
           discussionTitle: ${{ github.event.discussion.title }}
           discussionBody: ${{ github.event.discussion.body }}
-        run: node actions/discussion_rating.js
+        run: node actions/summary.js

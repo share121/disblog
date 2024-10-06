@@ -2,6 +2,7 @@
 
 const { env } = require("process");
 const { spawn } = require("child_process");
+const OpenAI = require("openai");
 
 const {
     actionId,
@@ -12,7 +13,6 @@ const {
     discussionBody,
   } = env,
   [owner, repoName] = repo.split("/");
-const OpenAI = require("openai");
 
 const client = new OpenAI({
   baseURL: "http://localhost:11434/v1/",
@@ -58,6 +58,21 @@ mutation {
   );
 }
 
+/** @param {string} labelName */
+async function rmLabel(labelName) {
+  const labelId = await getLabelId(labelName);
+  await graphql(
+    `
+mutation {
+  removeLabelsFromLabelable(
+    input: {labelableId: "${discussionId}", labelIds: ["${labelId}"]}
+  ) {
+    clientMutationId
+  }
+}`
+  );
+}
+
 /** @param {string} text */
 function queryEncode(text) {
   return text
@@ -75,21 +90,6 @@ mutation {
   addDiscussionComment(input: { discussionId: "${discussionId}", body: "${queryEncode(
       body
     )}" }) {
-    clientMutationId
-  }
-}`
-  );
-}
-
-/** @param {string} labelName */
-async function rmLabel(labelName) {
-  const labelId = await getLabelId(labelName);
-  await graphql(
-    `
-mutation {
-  removeLabelsFromLabelable(
-    input: {labelableId: "${discussionId}", labelIds: ["${labelId}"]}
-  ) {
     clientMutationId
   }
 }`
@@ -124,6 +124,9 @@ async function ai(prompt) {
 
 1. **原文内容**：原因
 2. **原文内容**：原因
+
+## 总结
+
 `,
       },
       { role: "user", content: prompt },

@@ -18,7 +18,7 @@ jobs:
           REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISCUSSION_ID: ${{ github.event.discussion.node_id }}
-        run: 1.bash
+        run: bash 1.bash
 
   nsfw-rating:
     runs-on: ubuntu-latest

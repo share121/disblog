@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - shell: bash
+        env:
+          REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISCUSSION_ID: ${{ github.event.discussion.node_id }}
         run: |
           #!/bin/bash
 

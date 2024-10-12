@@ -16,7 +16,7 @@ clear_labels() {
 
 # 获取标签ID
 get_label_id() {
-  graphql_request "{ repository(owner: \"$OWNER\", name: \"$REPO_NAME\") { label(name: \"$1\") { id } } }" | jq -r ".data.repository.label.id"
+  return graphql_request "{ repository(owner: \"$OWNER\", name: \"$REPO_NAME\") { label(name: \"$1\") { id } } }" | jq -r ".data.repository.label.id"
 }
 
 # 添加标签到讨论

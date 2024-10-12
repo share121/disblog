@@ -11,40 +11,19 @@ graphql_request() {
 
 # 清除讨论上的所有标签
 clear_labels() {
-  graphql_request "
-  mutation {
-    clearLabelsFromLabelable(input: {labelableId: \"$DISCUSSION_ID\"}) {
-      clientMutationId
-    }
-  }
-" | jq -r ".data.clearLabelsFromLabelable.clientMutationId"
+  graphql_request "mutation { clearLabelsFromLabelable(input: {labelableId: \"$DISCUSSION_ID\"}) { clientMutationId } }"
 }
 
 # 获取标签ID
 get_label_id() {
-  graphql_request "
-  {
-    repository(owner: \"$OWNER\", name: \"$REPO_NAME\") {
-      label(name: \"$1\") {
-        id
-      }
-    }
-  }
-" | jq -r ".data.repository.label.id"
+  graphql_request "{ repository(owner: \"$OWNER\", name: \"$REPO_NAME\") { label(name: \"$1\") { id } } }" | jq -r ".data.repository.label.id"
 }
 
 # 添加标签到讨论
 add_label() {
-  LABEL_ID=$(get_label_id "$1")
-  graphql_request "
-  mutation {
-    addLabelsToLabelable(
-      input: {labelableId: \"$DISCUSSION_ID\", labelIds: [\"$LABEL_ID\"]}
-    ) {
-      clientMutationId
-    }
-  }
-" | jq -r ".data.addLabelsToLabelable.clientMutationId"
+  LABEL_ID=$(get_label_id $1)
+  echo $LABEL_ID
+  graphql_request "mutation { addLabelsToLabelable(input: {labelableId: \"$DISCUSSION_ID\", labelIds: [\"$LABEL_ID\"]}) { clientMutationId } }" | jq -r ".data.addLabelsToLabelable.clientMutationId"
 }
 
 # 执行清除标签操作

@@ -35,7 +35,7 @@ jobs:
         with:
           deno-version: v2.x
 
-      - run: deno install --allow-scripts=npm:sharp@0.33.5,npm:@tensorflow/tfjs-node@4.21.0,npm:core-js@3.29.1
+      - run: deno install --node-modules-dir=auto --allow-scripts=npm:sharp@0.33.5,npm:@tensorflow/tfjs-node@4.21.0,npm:core-js@3.29.1
 
       - name: Rating Images
         env:

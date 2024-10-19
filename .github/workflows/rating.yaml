@@ -43,7 +43,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
           discussionBody: ${{ github.event.discussion.body }}
-        run: deno run -A actions/nsfw_rating.ts
+        run: deno run --node-modules-dir=auto -A actions/nsfw_rating.ts
 
   discussion-rating:
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
           discussionId: ${{ github.event.discussion.node_id }}
           discussionTitle: ${{ github.event.discussion.title }}
           discussionBody: ${{ github.event.discussion.body }}
-        run: deno run -A actions/rating.ts
+        run: deno run --node-modules-dir=auto -A actions/rating.ts
 
   summary:
     runs-on: ubuntu-latest
@@ -97,4 +97,4 @@ jobs:
           discussionId: ${{ github.event.discussion.node_id }}
           discussionTitle: ${{ github.event.discussion.title }}
           discussionBody: ${{ github.event.discussion.body }}
-        run: deno run -A actions/summary.ts
+        run: deno run --node-modules-dir=auto -A actions/summary.ts

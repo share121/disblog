@@ -17,7 +17,7 @@ for await (const folder of aiToolsFolders) {
   const toolsPath = path.join(foldersPath, folder.name);
   const toolFiles = Deno.readDir(toolsPath);
   for await (const file of toolFiles) {
-    if (!file.name.endsWith(".js")) continue;
+    if (!file.name.endsWith(".ts")) continue;
     const filePath = path.join(toolsPath, file.name);
     const tool = await import(filePath);
     if ("option" in tool && "execute" in tool) {

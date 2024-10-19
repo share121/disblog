@@ -16,7 +16,7 @@ jobs:
 
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: stable
+          deno-version: v2.x
 
       - name: Add Label
         run: deno run -A actions/add_label.ts
@@ -33,7 +33,7 @@ jobs:
 
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: stable
+          deno-version: v2.x
 
       - name: Rating Images
         env:
@@ -53,7 +53,7 @@ jobs:
 
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: stable
+          deno-version: v2.x
 
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
@@ -80,7 +80,7 @@ jobs:
 
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: stable
+          deno-version: v2.x
 
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh

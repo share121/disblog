@@ -16,7 +16,7 @@ jobs:
 
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: stable
+          deno-version: v2.x
 
       - name: Build
         env:

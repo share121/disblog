@@ -1,25 +1,20 @@
-"use strict";
+import { minify } from "npm:html-minifier";
+import { copy } from "jsr:@std/fs";
 
-const { env } = require("process");
-const { promises: fs } = require("fs");
-const { minify } = require("html-minifier");
-const [owner, repoName] = env.repo.split("/");
+const [owner, repoName] = Deno.env.get("repo")!.split("/");
 
 (async () => {
   try {
-    await fs.rm("dist", { force: true, recursive: true });
+    await Deno.remove("dist", { recursive: true });
   } catch {
     //
   }
-  await fs.mkdir("dist");
-  await fs.cp("src", "dist", {
-    filter: (file) => file !== "src/index.html",
-    recursive: true,
-  });
-  const raw = (await fs.readFile("src/index.html", "utf-8"))
+  await Deno.mkdir("dist");
+  await copy("src", "dist", { overwrite: true });
+  const raw = (await Deno.readTextFile("src/index.html"))
     .replace('var owner = "share121";', `var owner = "${owner}";`)
     .replace('var repo = "disblog";', `var repo = "${repoName}";`);
-  fs.writeFile(
+  Deno.writeTextFile(
     "dist/index.html",
     minify(raw, {
       collapseBooleanAttributes: true,
@@ -37,6 +32,5 @@ const [owner, repoName] = env.repo.split("/");
       sortClassName: true,
       useShortDoctype: true,
     }),
-    "utf-8"
   );
 })();

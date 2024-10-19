@@ -1,5 +1,5 @@
 import tf from "npm:@tensorflow/tfjs-node";
-import nsfw from "npm:nsfwjs";
+import * as nsfw from "npm:nsfwjs";
 import path from "node:path";
 import sharp from "npm:sharp";
 import { addComment, addLabel } from "./api.ts";

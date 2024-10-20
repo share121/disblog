@@ -18,6 +18,11 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Generate Event JSON
+        env:
+          event: ${{ toJson(github.event) }}
+        run: echo $event > actions/event.json
+
       - name: Save discussion
         env:
           event: ${{ toJson(github.event) }}

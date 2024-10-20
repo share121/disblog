@@ -4,11 +4,6 @@ import { copy } from "jsr:@std/fs";
 const [owner, repoName] = Deno.env.get("repo")!.split("/");
 
 (async () => {
-  try {
-    await Deno.remove("dist", { recursive: true });
-  } catch {
-    //
-  }
   await Deno.mkdir("dist");
   await copy("src", "dist", { overwrite: true });
   const raw = (await Deno.readTextFile("src/index.html"))

@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - run: |
-          currentTime=$(date +"%F-%H-%M-%S-%N-%Z")
+          currentTime=$(date +"%s")
           mkdir -p discussions
           echo $discussion > discussions/$title-$currentTime.json
         env:

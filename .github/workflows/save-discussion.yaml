@@ -20,7 +20,7 @@ jobs:
       - name: Save discussion
         env:
           repo: ${{ github.repository }}
-          discussion: ${{ github.event.discussion }}
+          discussion: ${{ toJson(github.event.discussion) }}
         run: deno run -A actions/save-discussion.ts
 
       - name: Commit files

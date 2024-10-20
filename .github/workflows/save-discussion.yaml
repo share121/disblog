@@ -1,0 +1,38 @@
+name: Save Discussion
+
+on:
+  discussion:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Save discussion
+        env:
+          repo: ${{ github.repository }}
+          discussion: ${{ github.event.discussion }}
+        run: deno run -A actions/save-discussion.ts
+
+      - name: Commit files
+        run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "github-actions[bot]"
+          git pull
+          git add .
+          git commit -m "save discussion"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main

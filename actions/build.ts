@@ -18,7 +18,7 @@ let raw = (await Deno.readTextFile("src/index.html"))
 
 const discussionsFolder = "discussions";
 let cards = "";
-Deno.mkdir(discussionsFolder).catch(() => {});
+await Deno.mkdir(discussionsFolder).catch(() => {});
 for await (const files of Deno.readDir(discussionsFolder)) {
   if (!files.name.endsWith(".json")) continue;
   const event: typeof GithubEvent = JSON.parse(

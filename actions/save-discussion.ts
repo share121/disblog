@@ -1,1 +1,2 @@
-console.log(Deno.env.get("discussion"));
+const event = Deno.env.get("event")!;
+console.log(JSON.parse(event));

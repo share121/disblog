@@ -2,12 +2,15 @@
   "version": "4",
   "specifiers": {
     "jsr:@std/fs@*": "1.0.4",
+    "jsr:@std/html@*": "1.0.3",
     "jsr:@std/path@*": "1.0.6",
     "jsr:@std/path@^1.0.6": "1.0.6",
+    "jsr:@thai/html@*": "0.1.0",
     "npm:@tensorflow/tfjs-node@*": "4.21.0",
     "npm:@types/node@*": "22.5.4",
     "npm:async-mutex@*": "0.5.0",
     "npm:html-minifier@*": "4.0.0",
+    "npm:lodash-es@^4.17.21": "4.17.21",
     "npm:nsfwjs@*": "4.2.0_@tensorflow+tfjs@4.21.0__@tensorflow+tfjs-core@4.21.0_buffer@6.0.3",
     "npm:ollama@*": "0.5.9",
     "npm:openai@*": "4.68.1",
@@ -20,8 +23,17 @@
         "jsr:@std/path@^1.0.6"
       ]
     },
+    "@std/html@1.0.3": {
+      "integrity": "7a0ac35e050431fb49d44e61c8b8aac1ebd55937e0dc9ec6409aa4bab39a7988"
+    },
     "@std/path@1.0.6": {
       "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
+    },
+    "@thai/html@0.1.0": {
+      "integrity": "3ed7eb4dd3f5724c5915aba46288735ac1f042cc048d57cc9063fbbbc72ca360",
+      "dependencies": [
+        "npm:lodash-es"
+      ]
     }
   },
   "npm": {
@@ -559,6 +571,9 @@
     },
     "is-fullwidth-code-point@3.0.0": {
       "integrity": "sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg=="
+    },
+    "lodash-es@4.17.21": {
+      "integrity": "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="
     },
     "long@4.0.0": {
       "integrity": "sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA=="

@@ -9,6 +9,9 @@ permissions:
 
 jobs:
   build-and-deploy:
+    concurrency:
+      group: build-and-deploy
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

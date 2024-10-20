@@ -16,9 +16,16 @@
         background: #121212;
         color: #fff;
         font-size: 16px;
-        font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC",
-          "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei",
-          "WenQuanYi Micro Hei", sans-serif;
+        font-family:
+          "Helvetica Neue",
+          Helvetica,
+          Arial,
+          "PingFang SC",
+          "Hiragino Sans GB",
+          "Heiti SC",
+          "Microsoft YaHei",
+          "WenQuanYi Micro Hei",
+          sans-serif;
       }
       /* clears the ‘X’ from Internet Explorer */
       input[type="search"]::-ms-clear {
@@ -69,7 +76,9 @@
         font-size: 18px;
         max-width: 56px;
         width: 100%;
-        transition: max-width ease 0.3s, padding-left ease 0.3s,
+        transition:
+          max-width ease 0.3s,
+          padding-left ease 0.3s,
           border-color ease 0.3s;
       }
       #searchbox:focus,
@@ -191,65 +200,38 @@
   <body>
     <div style="display: flex; height: 100vh; flex-direction: column">
       <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          background: #000;
-          padding: 8px 16px;
-          overflow: auto;
-        "
+        style="display: flex; justify-content: space-between; background: #000; padding: 8px
+  16px; overflow: auto"
       >
         <div
-          style="
-            line-height: 1;
-            display: flex;
-            padding: 8px;
-            align-items: center;
-            border-radius: 100px;
-            background: linear-gradient(#212121, #141414);
-            box-shadow: inset 0 2px 2px #313431, inset 0 -2px 2px #181818;
-          "
+          style="line-height: 1; display: flex; padding: 8px; align-items: center; border-radius: 100px; background: linear-gradient(
+  #212121,
+  #141414
+); box-shadow: inset 0 2px 2px #313431, inset 0 -2px 2px #181818"
         >
           <img
             src="avatar.svg"
             alt="头像"
-            style="
-              width: 40px;
-              height: 40px;
-              object-fit: cover;
-              border-radius: 100%;
-              margin-right: 4px;
-            "
+            style="width: 40px; height: 40px; object-fit: cover; border-radius: 100%; margin-right: 4px"
           />
           <div>
             <div style="font-weight: bold">法厄同</div>
             <div
-              style="
-                margin-top: 4px;
-                border-radius: 100px;
-                background: #222;
-                box-shadow: inset 0 2px 2px #131313, inset 0 -2px 2px #262626;
-                font-size: 0.8em;
-                width: 130px;
-                position: relative;
-                overflow: hidden;
-              "
+              style="margin-top: 4px; border-radius: 100px; background: #222; box-shadow:
+  inset 0 2px 2px #131313,
+  inset 0 -2px 2px
+  #262626; font-size: 0.8em; width: 130px; position: relative; overflow: hidden"
             >
               <div
-                style="
-                  border-radius: 100px;
-                  background: linear-gradient(90deg, #4661fd, #10bff0);
-                  width: 50%;
-                  height: 16px;
-                "
-              ></div>
+                style="border-radius: 100px; background: linear-gradient(
+  90deg,
+  #4661fd,
+  #10bff0
+); width: 50%; height: 16px"
+              >
+              </div>
               <div
-                style="
-                  position: absolute;
-                  white-space: nowrap;
-                  left: 8px;
-                  top: 2px;
-                "
+                style="position: absolute; white-space: nowrap; left: 8px; top: 2px"
               >
                 57257 / 114514
               </div>
@@ -269,12 +251,7 @@
               width="32"
               height="32"
               viewBox="0 0 24 24"
-              style="
-                position: absolute;
-                left: 12px;
-                top: 12px;
-                pointer-events: none;
-              "
+              style="position: absolute; left: 12px; top: 12px; pointer-events: none"
             >
               <path
                 fill="currentColor"
@@ -286,7 +263,9 @@
         </form>
       </div>
       <div style="overflow: auto; flex: 1">
-        <div id="cardgrid"></div>
+        <div id="cardgrid">
+          <!-- discussions -->
+        </div>
       </div>
     </div>
     <script>
@@ -306,27 +285,6 @@
         });
       }
 
-      //     Future<PaginationModel<HDataModel>> search(
-      //     String query, String endCur) async {
-      //   final res = await graphql(graphql_query.search(query, endCur));
-      //   return PaginationModel.fromJson(
-      //     // ignore: avoid_dynamic_calls
-      //     res.body!['data']['search'] as Map<String, dynamic>,
-      //     HDataModel.fromJson,
-      //   );
-      // }
-
-      // Future<PaginationModel<CommentModel>> getComments(
-      //     int number, String endCur) async {
-      //   final res = await graphql(graphql_query.getComments(number, endCur));
-      //   return PaginationModel.fromJson(
-      //     // ignore: avoid_dynamic_calls
-      //     res.body!['data']['repository']['discussion']['comments']
-      //         as Map<String, dynamic>,
-      //     CommentModel.fromJson,
-      //   );
-      // }
-
       // request(
       //   "GET",
       //   "https://api.github.com/repos/zhengyuxiang/zhengyuxiang.github.io/contents/index.json",
@@ -344,8 +302,8 @@
             "avatar.svg",
             "namenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamenamename",
             "titletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitle",
-            "contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent"
-          )
+            "contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent",
+          ),
         );
       }
 
@@ -354,65 +312,8 @@
         "resize",
         debounce(function () {
           waterfall(cardgrid);
-        }, 500)
+        }, 500),
       );
-
-      function createDiscussionCard(
-        cover,
-        commentCount,
-        avatar,
-        name,
-        title,
-        content
-      ) {
-        var card = document.createElement("button");
-        card.className = "discussion-card";
-        card.type = "button";
-        var coverBox = document.createElement("div");
-        coverBox.className = "cover-box";
-        var coverEl = document.createElement("img");
-        coverEl.className = "cover";
-        coverEl.src = cover;
-        coverEl.alt = "封面";
-        coverEl.loading = "lazy";
-        coverEl.addEventListener("load", function () {
-          waterfall(cardgrid);
-        });
-        coverEl.addEventListener("error", function () {
-          coverEl.src = "cover.svg";
-        });
-        coverBox.appendChild(coverEl);
-        var commentCountEl = document.createElement("div");
-        commentCountEl.className = "comment-count";
-        commentCountEl.textContent = commentCount;
-        coverBox.appendChild(commentCountEl);
-        card.appendChild(coverBox);
-        var authorBox = document.createElement("div");
-        authorBox.className = "author-box";
-        var avatarEl = document.createElement("img");
-        avatarEl.className = "avatar";
-        avatarEl.src = avatar;
-        avatarEl.alt = "头像";
-        avatarEl.loading = "lazy";
-        avatarEl.addEventListener("error", function () {
-          avatarEl.src = "avatar.svg";
-        });
-        authorBox.appendChild(avatarEl);
-        var authorNameEl = document.createElement("div");
-        authorNameEl.className = "name";
-        authorNameEl.textContent = name;
-        authorBox.appendChild(authorNameEl);
-        card.appendChild(authorBox);
-        var titleEl = document.createElement("h3");
-        titleEl.className = "title";
-        titleEl.textContent = title;
-        card.appendChild(titleEl);
-        var contentEl = document.createElement("div");
-        contentEl.className = "content";
-        contentEl.textContent = content;
-        card.appendChild(contentEl);
-        return card;
-      }
 
       /**
        * @param {string} data
@@ -423,7 +324,7 @@
           "POST",
           "https://api.github.com/graphql",
           JSON.stringify({ query: data }),
-          cb
+          cb,
         );
       }
 

@@ -20,8 +20,8 @@ jobs:
           echo $discussion > discussions/$title-$currentTime.json
         env:
           discussion: ${{ toJson(github.event.discussion) }}
-          comment: ${{ toJson(github.event.discussion.comments) }}
-          title: ${{ github.event.discussion.title }}
+          comment: ${{ toJson(github.event.discussion.comments[0]) }}
+          title: ${{ format(github.event.discussion.title) }}
 
       - name: Commit files
         run: |

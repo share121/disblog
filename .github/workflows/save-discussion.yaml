@@ -17,10 +17,7 @@ jobs:
       - run: |
           currentTime=$(date +"%s")
           mkdir -p discussions
-          echo $event > discussions/$number-$currentTime.json
-        env:
-          event: ${{ toJson(github.event) }}
-          number: ${{ github.event.discussion.number }}
+          echo ${{ toJson(github.event) }} > discussions/${{ github.event.discussion.number }}-$currentTime.json
 
       - name: Commit files
         run: |
@@ -28,7 +25,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git pull
           git add .
-          git commit -m "save discussion"
+          git commit -m "save discussion ${{ github.event.discussion.number }}"
 
       - name: Push changes
         uses: ad-m/github-push-action@master

@@ -17,11 +17,11 @@ jobs:
       - run: |
           currentTime=$(date +"%s")
           mkdir -p discussions
-          echo $discussion > discussions/$title-$currentTime.json
+          echo $discussion > discussions/$number-$currentTime.json
         env:
           discussion: ${{ toJson(github.event.discussion) }}
           comment: ${{ toJson(github.event.discussion.comments[0]) }}
-          title: ${{ format(github.event.discussion.title) }}
+          number: ${{ github.event.discussion.number }}
 
       - name: Commit files
         run: |

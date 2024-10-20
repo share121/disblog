@@ -14,11 +14,12 @@ jobs:
         uses: actions/checkout@v4
 
       - run: |
-          mkdir -p discussions
-          echo $discussion > discussions/$title.json
+          mkdir -p discussions/$time
+          echo $discussion > discussions/$time/$title.json
         env:
           discussion: ${{ toJson(github.event.discussion) }}
           title: ${{ github.event.discussion.title }}
+          time: ${{ github.event.discussion.updated_at }}
 
       - name: Commit files
         run: |

@@ -17,7 +17,9 @@ jobs:
       - run: |
           currentTime=$(date +"%s")
           mkdir -p discussions
-          echo ${{ toJson(github.event) }} > discussions/${{ github.event.discussion.number }}-$currentTime.json
+          echo $event > discussions/${{ github.event.discussion.number }}-$currentTime.json
+        env:
+          event: ${{ toJson(github.event) }}
 
       - name: Commit files
         run: |

@@ -9,12 +9,19 @@ const actionId = Deno.env.get("actionId")!,
   discussionTitle = Deno.env.get("discussionTitle")!,
   [owner, repoName] = repo.split("/");
 
-const urlRegex = /https?:\/\/\S+/gi;
-
 function genPrompt() {
-  return `# ${discussionTitle}
+  return `# 论坛标题
 
-${discussionBody.replace(urlRegex, "").trim()}`;
+\`\`\`
+${discussionTitle}
+\`\`\`
+
+# 论坛内容
+
+\`\`\`md
+${discussionBody.trim()}
+\`\`\`
+`;
 }
 
 const prompt = genPrompt();

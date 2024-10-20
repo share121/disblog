@@ -10,9 +10,18 @@ const actionId = Deno.env.get("actionId")!,
   [owner, repoName] = repo.split("/");
 
 function genPrompt() {
-  return `# ${discussionTitle}
+  return `# 论坛标题
 
-${discussionBody.trim()}`;
+\`\`\`
+${discussionTitle}
+\`\`\`
+
+# 论坛内容
+
+\`\`\`md
+${discussionBody.trim()}
+\`\`\`
+`;
 }
 
 const prompt = genPrompt();

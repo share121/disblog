@@ -15,9 +15,9 @@ jobs:
         uses: actions/checkout@v4
 
       - run: |
-          currentTime=$(date +%s)
-          mkdir -p discussions/$currentTime
-          echo $discussion > discussions/$currentTime/$title.json
+          currentTime=$(date +"%F-%H-%M-%S-%N-%Z")
+          mkdir -p discussions
+          echo $discussion > discussions/$title-$currentTime.json
         env:
           discussion: ${{ toJson(github.event.discussion) }}
           title: ${{ github.event.discussion.title }}

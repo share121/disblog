@@ -14,19 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - name: Generate Event JSON
+      - run: |
+          currentTime=$(date +"%s")
+          mkdir -p discussions
+          echo $event > discussions/$number-$currentTime.json
         env:
           event: ${{ toJson(github.event) }}
-        run: echo $event > actions/event.json
-
-      - name: Save discussion
-        env:
-          event: ${{ toJson(github.event) }}
-        run: deno run -A actions/save-discussion.ts
+          number: ${{ github.event.discussion.number }}
 
       - name: Commit files
         run: |

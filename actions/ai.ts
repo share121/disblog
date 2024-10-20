@@ -10,7 +10,7 @@ const tools: {
   execute: (arg: { [key: string]: string }) => Promise<string> | string;
 }[] = [];
 
-const foldersPath = "ai-tools";
+const foldersPath = path.join(Deno.cwd(), "ai-tools");
 const aiToolsFolders = Deno.readDir(foldersPath);
 
 for await (const folder of aiToolsFolders) {

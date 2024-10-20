@@ -2,12 +2,12 @@ import { createAi } from "./ai.ts";
 import { addComment } from "./api.ts";
 
 const actionId = Deno.env.get("actionId")!,
-  owner = Deno.env.get("owner")!,
   githubToken = Deno.env.get("githubToken")!,
   discussionId = Deno.env.get("discussionId")!,
   discussionBody = Deno.env.get("discussionBody")!,
   discussionTitle = Deno.env.get("discussionTitle")!,
-  jobId = Deno.env.get("jobId")!;
+  repo = Deno.env.get("repo")!,
+  [owner, repoName] = repo.split("/");
 
 function genPrompt() {
   return `# ${discussionTitle}
@@ -47,7 +47,7 @@ addComment(
   {
     body: `${reply}
 
-> 来自：https://github.com/share121/disblog/actions/runs/${actionId}/job/${jobId}
+> 来自：https://github.com/${owner}/${repoName}/actions/runs/${actionId}/
 > 如有异议，请在本条评论下方 \`@${owner}\`
 `,
 

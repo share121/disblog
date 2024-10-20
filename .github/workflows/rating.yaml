@@ -40,7 +40,6 @@ jobs:
       - name: Rating Images
         env:
           actionId: ${{ github.run_id }}
-          jobId: ${{ github.job}}
           repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
@@ -66,7 +65,6 @@ jobs:
       - name: Rating discussion
         env:
           actionId: ${{ github.run_id }}
-          jobId: ${{ github.job}}
           repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
@@ -93,8 +91,7 @@ jobs:
       - name: Summary discussion
         env:
           actionId: ${{ github.run_id }}
-          jobId: ${{ github.job}}
-          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
           discussionTitle: ${{ github.event.discussion.title }}

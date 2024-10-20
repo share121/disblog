@@ -7,7 +7,6 @@ const actionId = Deno.env.get("actionId")!,
   discussionId = Deno.env.get("discussionId")!,
   discussionBody = Deno.env.get("discussionBody")!,
   discussionTitle = Deno.env.get("discussionTitle")!,
-  jobId = Deno.env.get("jobId")!,
   [owner, repoName] = repo.split("/");
 
 const urlRegex = /https?:\/\/\S+/gi;
@@ -69,7 +68,7 @@ addComment(
   {
     body: `${reply}
 
-> 来自：https://github.com/share121/disblog/actions/runs/${actionId}/job/${jobId}
+> 来自：https://github.com/${owner}/${repoName}/actions/runs/${actionId}/
 > 如有异议，请在本条评论下方 \`@${owner}\`
 `,
     discussionId,

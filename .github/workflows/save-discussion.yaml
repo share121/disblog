@@ -13,7 +13,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - run: echo $discussion > discussions/$title.json
+      - run: |
+          mkdir -p discussions
+          echo $discussion > discussions/$title.json
         env:
           discussion: ${{ toJson(github.event.discussion) }}
           title: ${{ github.event.discussion.title }}

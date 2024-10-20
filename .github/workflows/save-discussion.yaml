@@ -13,15 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - name: Save discussion
+      - run: echo $discussion > discussions/$title.json
         env:
-          repo: ${{ github.repository }}
           discussion: ${{ toJson(github.event.discussion) }}
-        run: deno run -A actions/save-discussion.ts
+          title: ${{ github.event.discussion.title }}
 
       - name: Commit files
         run: |

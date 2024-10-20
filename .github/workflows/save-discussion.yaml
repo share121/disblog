@@ -2,6 +2,7 @@ name: Save Discussion
 
 on:
   discussion:
+  discussion_comment:
 
 permissions:
   contents: write

@@ -1,1 +1,77 @@
-{ "active_lock_reason": null, "answer_chosen_at": null, "answer_chosen_by": null, "answer_html_url": null, "author_association": "OWNER", "body": "asdfsdfasd", "category": { "created_at": "2024-10-02T22:36:12.000+08:00", "description": "Updates from maintainers", "emoji": ":mega:", "id": 42726303, "is_answerable": false, "name": "Announcements", "node_id": "DIC_kwDOM6beF84Ci_Of", "repository_id": 866573847, "slug": "announcements", "updated_at": "2024-10-02T22:36:12.000+08:00" }, "comments": 3, "created_at": "2024-10-20T02:07:08Z", "html_url": "https://github.com/share121/disblog/discussions/162", "id": 7342245, "labels": [ { "color": "c5def5", "default": false, "description": "ai 对文章的评价，如果有误，请联系管理员修改", "id": 7555896708, "name": "待审核", "node_id": "LA_kwDOM6beF88AAAABwl3VhA", "url": "https://api.github.com/repos/share121/disblog/labels/%E5%BE%85%E5%AE%A1%E6%A0%B8" } ], "locked": false, "node_id": "D_kwDOM6beF84AcAil", "number": 162, "reactions": { "+1": 0, "-1": 0, "confused": 0, "eyes": 0, "heart": 0, "hooray": 0, "laugh": 0, "rocket": 0, "total_count": 0, "url": "https://api.github.com/repos/share121/disblog/discussions/162/reactions" }, "repository_url": "https://api.github.com/repos/share121/disblog", "state": "open", "state_reason": null, "timeline_url": "https://api.github.com/repos/share121/disblog/discussions/162/timeline", "title": "你好dfsdfsdfegsegsegdsfsdf", "updated_at": "2024-10-20T02:20:52Z", "user": { "avatar_url": "https://avatars.githubusercontent.com/u/111939263?v=4", "events_url": "https://api.github.com/users/share121/events{/privacy}", "followers_url": "https://api.github.com/users/share121/followers", "following_url": "https://api.github.com/users/share121/following{/other_user}", "gists_url": "https://api.github.com/users/share121/gists{/gist_id}", "gravatar_id": "", "html_url": "https://github.com/share121", "id": 111939263, "login": "share121", "node_id": "U_kgDOBqwOvw", "organizations_url": "https://api.github.com/users/share121/orgs", "received_events_url": "https://api.github.com/users/share121/received_events", "repos_url": "https://api.github.com/users/share121/repos", "site_admin": false, "starred_url": "https://api.github.com/users/share121/starred{/owner}{/repo}", "subscriptions_url": "https://api.github.com/users/share121/subscriptions", "type": "User", "url": "https://api.github.com/users/share121", "user_view_type": "public" } }
+{
+  "active_lock_reason": null,
+  "answer_chosen_at": null,
+  "answer_chosen_by": null,
+  "answer_html_url": null,
+  "author_association": "OWNER",
+  "body": "asdfsdfasd",
+  "category": {
+    "created_at": "2024-10-02T22:36:12.000+08:00",
+    "description": "Updates from maintainers",
+    "emoji": ":mega:",
+    "id": 42726303,
+    "is_answerable": false,
+    "name": "Announcements",
+    "node_id": "DIC_kwDOM6beF84Ci_Of",
+    "repository_id": 866573847,
+    "slug": "announcements",
+    "updated_at": "2024-10-02T22:36:12.000+08:00"
+  },
+  "comments": 3,
+  "created_at": "2024-10-20T02:07:08Z",
+  "html_url": "https://github.com/share121/disblog/discussions/162",
+  "id": 7342245,
+  "labels": [
+    {
+      "color": "c5def5",
+      "default": false,
+      "description": "ai 对文章的评价，如果有误，请联系管理员修改",
+      "id": 7555896708,
+      "name": "待审核",
+      "node_id": "LA_kwDOM6beF88AAAABwl3VhA",
+      "url": "https://api.github.com/repos/share121/disblog/labels/%E5%BE%85%E5%AE%A1%E6%A0%B8"
+    }
+  ],
+  "locked": false,
+  "node_id": "D_kwDOM6beF84AcAil",
+  "number": 162,
+  "reactions": {
+    "+1": 0,
+    "-1": 0,
+    "confused": 0,
+    "eyes": 0,
+    "heart": 0,
+    "hooray": 0,
+    "laugh": 0,
+    "rocket": 0,
+    "total_count": 0,
+    "url": "https://api.github.com/repos/share121/disblog/discussions/162/reactions"
+  },
+  "repository_url": "https://api.github.com/repos/share121/disblog",
+  "state": "open",
+  "state_reason": null,
+  "timeline_url": "https://api.github.com/repos/share121/disblog/discussions/162/timeline",
+  "title": "你好dfsdfsdfegsegsegdsfsdf",
+  "updated_at": "2024-10-20T02:20:52Z",
+  "user": {
+    "avatar_url": "https://avatars.githubusercontent.com/u/111939263?v=4",
+    "events_url": "https://api.github.com/users/share121/events{/privacy}",
+    "followers_url": "https://api.github.com/users/share121/followers",
+    "following_url": "https://api.github.com/users/share121/following{/other_user}",
+    "gists_url": "https://api.github.com/users/share121/gists{/gist_id}",
+    "gravatar_id": "",
+    "html_url": "https://github.com/share121",
+    "id": 111939263,
+    "login": "share121",
+    "node_id": "U_kgDOBqwOvw",
+    "organizations_url": "https://api.github.com/users/share121/orgs",
+    "received_events_url": "https://api.github.com/users/share121/received_events",
+    "repos_url": "https://api.github.com/users/share121/repos",
+    "site_admin": false,
+    "starred_url": "https://api.github.com/users/share121/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/share121/subscriptions",
+    "type": "User",
+    "url": "https://api.github.com/users/share121",
+    "user_view_type": "public"
+  }
+}

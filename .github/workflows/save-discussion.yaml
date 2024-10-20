@@ -20,7 +20,7 @@ jobs:
           echo $discussion > discussions/$number-$currentTime.json
         env:
           discussion: ${{ toJson(github.event.discussion) }}
-          comment: ${{ toJson(github.event.discussion.comments[0]) }}
+          comment: ${{ toJson(github.event.comment) }}
           number: ${{ github.event.discussion.number }}
 
       - name: Commit files

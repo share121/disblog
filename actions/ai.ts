@@ -46,7 +46,7 @@ export function createAi({ contextSize }: { contextSize: number }) {
     // 请求
     const response = await ollama.chat({
       ...options,
-      messages: [...(options.messages ?? []), ...messages],
+      messages: [...messages, ...(options.messages ?? [])],
       tools: tools.map((t) => t.option),
       stream: false,
     });

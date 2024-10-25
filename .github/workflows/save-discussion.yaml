@@ -8,6 +8,19 @@ permissions:
   contents: write
 
 jobs:
+  get-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get lock
+        run: deno run -A actions/lock.ts
+        env:
+          actionId: ${{ github.run_id }}
+          repo: ${{ github.repository }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+    
   save-discussion:
     runs-on: ubuntu-latest
     steps:

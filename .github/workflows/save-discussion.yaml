@@ -14,13 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Get lock
         run: deno run -A actions/lock.ts
         env:
           actionId: ${{ github.run_id }}
           repo: ${{ github.repository }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-    
+
   save-discussion:
     runs-on: ubuntu-latest
     steps:

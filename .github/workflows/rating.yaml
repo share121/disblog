@@ -59,18 +59,7 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
-      - run: sudo chmod -R 777 /usr/share/ollama/
-        continue-on-error: true
-
-      - name: Cache Models
-        id: cache-models
-        uses: actions/cache@v4
-        with:
-          path: /usr/share/ollama/.ollama/models/
-          key: ${{ runner.os }}-models
-
       - name: Install Qwen2.5 7B
-        if: steps.cache-models.outputs.cache-hit != 'true'
         run: ollama pull qwen2.5:7b
 
       - name: Rating discussion
@@ -96,18 +85,7 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
-      - run: sudo chmod -R 777 /usr/share/ollama/
-        continue-on-error: true
-
-      - name: Cache Models
-        id: cache-models
-        uses: actions/cache@v4
-        with:
-          path: /usr/share/ollama/.ollama/models/
-          key: ${{ runner.os }}-models
-
       - name: Install Qwen2.5 7B
-        if: steps.cache-models.outputs.cache-hit != 'true'
         run: ollama pull qwen2.5:7b
 
       - name: Summary discussion

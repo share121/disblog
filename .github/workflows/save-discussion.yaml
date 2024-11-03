@@ -19,7 +19,7 @@ jobs:
           deno-version: v2.x
 
       - name: Get lock
-        run: deno run -A actions/lock.ts
+        run: deno run --node-modules-dir=auto -A actions/lock.ts
         env:
           runNumber: ${{ github.run_number }}
           repo: ${{ github.repository }}

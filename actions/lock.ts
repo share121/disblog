@@ -1,4 +1,4 @@
-import { App, Octokit } from "npm:octokit";
+import { Octokit } from "npm:octokit";
 
 const runNumber = +Deno.env.get("runNumber")!,
   githubToken = Deno.env.get("githubToken")!,
@@ -31,17 +31,22 @@ const workflow = await octokit.rest.actions.getWorkflowRun({
 const workflowId = workflow.data.workflow_id;
 
 // 获取 workflow run 列表
-const list = await octokit.rest.actions.listWorkflowRuns({
-  owner,
-  repo: repoName,
-  workflow_id: workflowId,
-});
-const data = list.data.workflow_runs;
-for (const i of data) {
-  if (!["in_progress"].includes(i.status ?? "")) continue;
-  const updatedAt = new Date(i.updated_at);
-  if (updatedAt.getTime() >= Date.now()) continue;
-  octokit.hook("workflow_job", (e) => {
-    console.log(e);
-  }, {});
+while (true) {
+  const list = await octokit.rest.actions.listWorkflowRuns({
+    owner,
+    repo: repoName,
+    workflow_id: workflowId,
+  });
+  const data = list.data.workflow_runs.filter((i) => {
+    if (!["in_progress"].includes(i.status ?? "")) return false;
+    const updatedAt = new Date(i.updated_at);
+    if (updatedAt.getTime() >= Date.now()) return false;
+    return true;
+  });
+  if (!data.length) break;
+  delay(1000);
+}
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

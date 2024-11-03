@@ -3,6 +3,8 @@ import * as nsfw from "npm:nsfwjs";
 import path from "node:path";
 import sharp from "npm:sharp";
 import { addComment, addLabel } from "./api.ts";
+import markdownit from "npm:markdown-it";
+import * as cheerio from "npm:cheerio";
 
 const actionId = Deno.env.get("actionId")!,
   repo = Deno.env.get("repo")!,
@@ -11,7 +13,15 @@ const actionId = Deno.env.get("actionId")!,
   discussionBody = Deno.env.get("discussionBody")!,
   [owner, repoName] = repo.split("/");
 
-const urlRegex = /https?:\/\/\S+/gi;
+const md = markdownit({
+  html: true,
+  xhtmlOut: true,
+  breaks: true,
+  linkify: true,
+  typographer: true,
+});
+const html: string = md.render(discussionBody);
+const $ = cheerio.load(html);
 
 tf.enableProdMode();
 
@@ -53,8 +63,10 @@ function formatPredictions(predictions: nsfw.PredictionType[]) {
     .join("\n  ");
 }
 
-const m = discussionBody.match(urlRegex);
-if (m === null) Deno.exit(0);
+const m = $("a[href]").toArray().map((e) => $(e).prop("href")).filter((e) =>
+  e !== undefined
+);
+if (!m.length) Deno.exit(0);
 const nsfwUrls = [];
 for (const url of m) {
   try {

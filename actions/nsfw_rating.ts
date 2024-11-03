@@ -63,9 +63,10 @@ function formatPredictions(predictions: nsfw.PredictionType[]) {
     .join("\n  ");
 }
 
-const m = $("a[href]").toArray().map((e) => $(e).prop("href")).filter((e) =>
-  e !== undefined
-);
+const m = [
+  ...$("a[href]").toArray().map((e) => $(e).prop("href")),
+  ...$("img[src]").toArray().map((e) => $(e).prop("src")),
+].filter((e) => e !== undefined);
 if (!m.length) Deno.exit(0);
 const nsfwUrls = [];
 for (const url of m) {

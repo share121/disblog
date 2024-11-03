@@ -1,9 +1,11 @@
-import { Octokit } from "npm:octokit";
+import github from "npm:@actions/github";
 
 const runNumber = +Deno.env.get("runNumber")!,
   githubToken = Deno.env.get("githubToken")!,
   repo = Deno.env.get("repo")!,
   [owner, repoName] = repo.split("/");
+
+const octokit = github.getOctokit(githubToken);
 
 type status =
   | "completed"
@@ -22,7 +24,6 @@ type status =
   | "pending";
 
 // 得到 workflow id
-const octokit = new Octokit({ auth: githubToken });
 const workflow = await octokit.rest.actions.getWorkflowRun({
   owner,
   repo: repoName,

@@ -25,5 +25,9 @@ export async function execute(args: { [key: string]: string }) {
       return text;
     }
   });
-  return JSON.stringify(await Promise.allSettled(p));
+  const res = JSON.stringify(
+    (await Promise.allSettled(p)).map((r, i) => ({ url: urls[i], ...r })),
+  );
+  console.log(res);
+  return res;
 }

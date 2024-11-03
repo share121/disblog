@@ -20,14 +20,17 @@ export async function execute(args: { [key: string]: string }) {
   const urls = args.urls.split("\n");
   const p = urls.map(async (url) => {
     const r = await fetch(url);
-    if (r.headers.get("content-type") === "text/html") {
+    if (
+      r.headers.get("Content-Type")?.toLocaleLowerCase().includes("text/html")
+    ) {
       const text = await r.text();
       return text;
     }
   });
-  const res = JSON.stringify(
-    (await Promise.allSettled(p)).map((r, i) => ({ url: urls[i], ...r })),
-  );
+  const res = (await Promise.allSettled(p)).map((r, i) => ({
+    url: urls[i],
+    ...r,
+  }));
   console.log(res);
-  return res;
+  return JSON.stringify(res);
 }

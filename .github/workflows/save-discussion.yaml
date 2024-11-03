@@ -26,6 +26,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
   save-discussion:
+    needs: get-lock
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

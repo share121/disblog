@@ -1,0 +1,79 @@
+name: Save Discussion
+
+on:
+  discussion:
+  discussion_comment:
+
+permissions:
+  contents: write
+
+jobs:
+  get-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Get lock
+        run: deno run -A actions/lock.ts
+        env:
+          runNumber: ${{ github.run_number }}
+          repo: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  save-discussion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - run: |
+          currentTime=$(date +%s%N)
+          mkdir -p discussions
+          echo $event > discussions/${{ github.event.discussion.number }}-$currentTime.json
+        env:
+          event: ${{ toJson(github.event) }}
+
+      - name: Commit files
+        run: |
+          git config --local user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config --local user.name github-actions[bot]
+          git pull
+          git add .
+          git commit -m "save discussion ${{ github.event.discussion.number }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
+  build-and-deploy:
+    needs: save-discussion
+    concurrency:
+      group: build-and-deploy
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Build
+        env:
+          repo: ${{ github.repository }}
+        run: deno run -A actions/build.ts
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          cname: s121.top

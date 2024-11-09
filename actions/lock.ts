@@ -30,17 +30,24 @@ const workflow = await octokit.rest.actions.getWorkflowRun({
 const workflowId = workflow.data.workflow_id;
 
 // 获取 workflow run 列表
-const list = await octokit.rest.actions.listWorkflowRuns({
-  owner,
-  repo: repoName,
-  workflow_id: workflowId,
-});
-const data = list.data.workflow_runs;
-for (const i of data) {
-  if (!["in_progress"].includes(i.status ?? "")) continue;
-  const updatedAt = new Date(i.updated_at);
-  if (updatedAt.getTime() >= Date.now()) continue;
-  octokit.hook("workflow_job", (e) => {
-    console.log(e);
-  }, {});
-}
+const list = await octokit.request(
+  "GET /repos/{owner}/{repo}/actions/runs/{run_id}",
+  {
+    owner,
+    repo: repoName,
+    run_id: workflowId,
+    headers: {
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  },
+);
+const data = list.data;
+console.log(data);
+// for (const i of data) {
+//   if (!["in_progress"].includes(i.status ?? "")) continue;
+//   const updatedAt = new Date(i.updated_at);
+//   if (updatedAt.getTime() >= Date.now()) continue;
+//   octokit.hook("workflow_job", (e) => {
+//     console.log(e);
+//   }, {});
+// }

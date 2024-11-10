@@ -8,18 +8,26 @@ const octokit = new Octokit();
 
 const workflowId = await getWorkflowId(owner, repoName, workflowName) as number;
 const allRuns = await getWorkflowRuns(owner, repoName, workflowId);
-const afterRuns = allRuns.data.workflow_runs.filter((e) => {
-  if (!["in_progress"].includes(e.status ?? "")) return false;
-  const updatedAt = new Date(e.updated_at);
-  if (updatedAt.getTime() >= Date.now()) return false;
-  return true;
+const beforeRuns = allRuns.data.workflow_runs.filter((e) => {
+  return isRunning() && isBefore();
+
+  function isRunning() {
+    if (!e.status) return false;
+    return ["in_progress", "queued"].includes(e.status);
+  }
+  function isBefore() {
+    const updatedAt = new Date(e.updated_at);
+    return updatedAt.getTime() < Date.now();
+  }
 });
 
-if (!afterRuns.length) {
+console.log(beforeRuns);
+
+if (!beforeRuns.length) {
   console.log("No runs to lock");
   Deno.exit(0);
 }
-for (const run of afterRuns) {
+for (const run of beforeRuns) {
   octokit.hook("workflow_run", (e) => {
     console.log(e);
   }, {

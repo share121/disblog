@@ -21,38 +21,12 @@ const beforeRuns = allRuns.data.workflow_runs.filter((e) => {
   }
 });
 
-console.log(beforeRuns);
-
 if (!beforeRuns.length) {
   console.log("No runs to lock");
   Deno.exit(0);
 }
-for (const run of beforeRuns) {
-  octokit.hook("workflow_run", (e) => {
-    console.log(e);
-  }, {
-    action: "completed",
-    repository: repo,
-    workflow: null,
-    workflow_run: run,
-  });
-}
-
-type status =
-  | "completed"
-  | "action_required"
-  | "cancelled"
-  | "failure"
-  | "neutral"
-  | "skipped"
-  | "stale"
-  | "success"
-  | "timed_out"
-  | "in_progress"
-  | "queued"
-  | "requested"
-  | "waiting"
-  | "pending";
+console.log("Waiting for runs: ", beforeRuns.map((e) => e.id));
+await waitBeforeRuns(repo, beforeRuns);
 
 async function getWorkflowRuns(
   owner: string,
@@ -88,4 +62,24 @@ async function getWorkflowId(
     },
   );
   return workflows.data.workflows.find((e) => e.name === workflowName)?.id;
+}
+
+function waitBeforeRuns(repo: string, task: typeof beforeRuns) {
+  return new Promise<void>((resolve) => {
+    let count = 0;
+    for (const run of task) {
+      octokit.hook("workflow_run", () => {
+        count++;
+        console.log(count, ":", run, "finished");
+        if (count === task.length) {
+          resolve();
+        }
+      }, {
+        action: "completed",
+        repository: repo,
+        workflow: null,
+        workflow_run: run,
+      });
+    }
+  });
 }

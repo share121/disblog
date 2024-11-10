@@ -2,7 +2,33 @@ import { Octokit } from "npm:octokit";
 
 const runNumber = +Deno.env.get("runNumber")!,
   repo = Deno.env.get("repo")!,
-  [owner, repoName] = repo.split("/");
+  [owner, repoName] = repo.split("/"),
+  workflowName = Deno.env.get("workflowName")!;
+
+const octokit = new Octokit();
+
+const f = await octokit.request(
+  "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs",
+  {
+    owner: "share121",
+    repo: "disblog",
+    workflow_id: workflowName,
+    headers: {
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  },
+);
+
+console.log(f.data);
+
+for (const i of f.data.workflow_runs) {
+  if (!["in_progress"].includes(i.status ?? "")) continue;
+  const updatedAt = new Date(i.updated_at);
+  if (updatedAt.getTime() >= Date.now()) continue;
+  octokit.hook("workflow_job", (e) => {
+    console.log(e);
+  }, {});
+}
 
 type status =
   | "completed"
@@ -19,28 +45,3 @@ type status =
   | "requested"
   | "waiting"
   | "pending";
-
-// 得到 workflow id
-const octokit = new Octokit();
-const workflow = await octokit.rest.actions.getWorkflowRun({
-  owner,
-  repo: repoName,
-  run_id: runNumber,
-});
-const workflowId = workflow.data.workflow_id;
-
-// 获取 workflow run 列表
-const list = await octokit.rest.actions.listWorkflowRuns({
-  owner,
-  repo: repoName,
-  workflow_id: workflowId,
-});
-const data = list.data.workflow_runs;
-for (const i of data) {
-  if (!["in_progress"].includes(i.status ?? "")) continue;
-  const updatedAt = new Date(i.updated_at);
-  if (updatedAt.getTime() >= Date.now()) continue;
-  octokit.hook("workflow_job", (e) => {
-    console.log(e);
-  }, {});
-}

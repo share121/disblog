@@ -1,6 +1,7 @@
 import { Octokit } from "npm:octokit";
 
-const repo = Deno.env.get("repo")!,
+const runId = +Deno.env.get("runId")!,
+  repo = Deno.env.get("repo")!,
   [owner, repoName] = repo.split("/"),
   workflowName = Deno.env.get("workflowName")!;
 
@@ -9,7 +10,7 @@ const octokit = new Octokit();
 const workflowId = await getWorkflowId(owner, repoName, workflowName) as number;
 const allRuns = await getWorkflowRuns(owner, repoName, workflowId);
 const beforeRuns = allRuns.data.workflow_runs.filter((e) => {
-  return isRunning() && isBefore();
+  return notMyself() && isRunning() && isBefore();
 
   function isRunning() {
     if (!e.status) return false;
@@ -18,6 +19,9 @@ const beforeRuns = allRuns.data.workflow_runs.filter((e) => {
   function isBefore() {
     const updatedAt = new Date(e.updated_at);
     return updatedAt.getTime() < Date.now();
+  }
+  function notMyself() {
+    return e.id !== runId;
   }
 });
 

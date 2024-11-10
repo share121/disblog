@@ -22,6 +22,7 @@ jobs:
       - name: Get lock
         run: deno run -A actions/lock.ts
         env:
+          runId: ${{ github.run_id }}
           workflowName: ${{ github.workflow }}
           repo: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

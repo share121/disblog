@@ -2,10 +2,12 @@ import { minify } from "html-minifier";
 import { copy } from "@std/fs";
 import { escape } from "@std/html";
 import path from "node:path";
+// import { Differ, segmenters } from "@clearlylocal/diff-match-patch-unicode";
 import GithubEvent from "./github-event.json" with { type: "json" };
 
 // const [owner, repoName] = Deno.env.get("repo")!.split("/");
 const [owner, repoName] = ["share121", "disblog"];
+// const differ = new Differ();
 
 await Deno.mkdir("dist").catch(async () => {
   await Deno.remove("dist", { recursive: true });

@@ -1,5 +1,6 @@
 {
   "imports": {
+    "@clearlylocal/diff-match-patch-unicode": "jsr:@clearlylocal/diff-match-patch-unicode@^0.1.1",
     "@std/fs": "jsr:@std/fs@^1.0.5",
     "@std/html": "jsr:@std/html@^1.0.3",
     "@tensorflow/tfjs-node": "npm:@tensorflow/tfjs-node@^4.22.0",

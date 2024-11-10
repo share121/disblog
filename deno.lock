@@ -1,6 +1,8 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@clearlylocal/diff-match-patch-unicode@~0.1.1": "0.1.1",
+    "jsr:@std/assert@^1.0.5": "1.0.6",
     "jsr:@std/fs@*": "1.0.4",
     "jsr:@std/fs@^1.0.5": "1.0.5",
     "jsr:@std/html@*": "1.0.3",
@@ -28,6 +30,15 @@
     "npm:sharp@~0.33.5": "0.33.5"
   },
   "jsr": {
+    "@clearlylocal/diff-match-patch-unicode@0.1.1": {
+      "integrity": "efff5836d363214e754fab4298639e78f25b4c89d9361f0e50d6798d9ac2f423",
+      "dependencies": [
+        "jsr:@std/assert"
+      ]
+    },
+    "@std/assert@1.0.6": {
+      "integrity": "1904c05806a25d94fe791d6d883b685c9e2dcd60e4f9fc30f4fc5cf010c72207"
+    },
     "@std/fs@1.0.4": {
       "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c",
       "dependencies": [
@@ -1334,6 +1345,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@clearlylocal/diff-match-patch-unicode@~0.1.1",
       "jsr:@std/fs@^1.0.5",
       "jsr:@std/html@^1.0.3",
       "npm:@tensorflow/tfjs-node@^4.22.0",

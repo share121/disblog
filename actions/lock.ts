@@ -70,7 +70,7 @@ function waitBeforeRuns(repo: string, task: typeof beforeRuns) {
     for (const run of task) {
       octokit.hook("workflow_run", () => {
         count++;
-        console.log(count, ":", run, "finished");
+        console.log(count, ":", run.id, "finished");
         if (count === task.length) {
           resolve();
         }

@@ -20,10 +20,9 @@ jobs:
           deno-version: v2.x
 
       - name: Get lock
-        run: deno run -A actions/lock1.ts
+        run: deno run -A actions/lock.ts
         env:
           workflowName: ${{ github.workflow }}
-          runNumber: ${{ github.run_number }}
           repo: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

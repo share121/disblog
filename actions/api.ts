@@ -126,3 +126,13 @@ mutation {
     },
   );
 }
+
+export function listRepositoryWorkflows(githubToken: string) {
+  return fetch("https://api.github.com/repos/OWNER/REPO/actions/workflows", {
+    headers: {
+      "Accept": "application/vnd.github+json",
+      "Authorization": `Bearer ${githubToken}`,
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+}

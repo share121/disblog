@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   get-lock:
@@ -19,7 +20,7 @@ jobs:
           deno-version: v2.x
 
       - name: Get lock
-        run: deno run -A actions/lock.ts
+        run: deno run -A actions/lock1.ts
         env:
           runNumber: ${{ github.run_number }}
           repo: ${{ github.repository }}

@@ -1,6 +1,6 @@
-import ollama, { ChatRequest, Message, Tool } from "npm:ollama";
+import ollama, { ChatRequest, Message, Tool } from "ollama";
 import path from "node:path";
-import { Mutex } from "npm:async-mutex";
+import { Mutex } from "async-mutex";
 
 const constraints = "\n\n约束：不包含借口或上下文，只返回答案。";
 new Deno.Command("ollama", { args: ["serve"] }).spawn();

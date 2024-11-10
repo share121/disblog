@@ -1,1 +1,16 @@
-{}
+{
+  "imports": {
+    "@std/fs": "jsr:@std/fs@^1.0.5",
+    "@std/html": "jsr:@std/html@^1.0.3",
+    "@tensorflow/tfjs-node": "npm:@tensorflow/tfjs-node@^4.22.0",
+    "async-mutex": "npm:async-mutex@^0.5.0",
+    "cheerio": "npm:cheerio@^1.0.0",
+    "html-minifier": "npm:html-minifier@^4.0.0",
+    "markdown-it": "npm:markdown-it@^14.1.0",
+    "nsfwjs": "npm:nsfwjs@^4.2.0",
+    "octokit": "npm:octokit@^4.0.2",
+    "ollama": "npm:ollama@^0.5.9",
+    "sharp": "npm:sharp@^0.33.5"
+  },
+  "nodeModulesDir": "auto"
+}

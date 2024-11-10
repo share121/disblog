@@ -2,23 +2,42 @@
   "version": "4",
   "specifiers": {
     "jsr:@std/fs@*": "1.0.4",
+    "jsr:@std/fs@^1.0.5": "1.0.5",
     "jsr:@std/html@*": "1.0.3",
+    "jsr:@std/html@^1.0.3": "1.0.3",
     "jsr:@std/path@^1.0.6": "1.0.6",
+    "jsr:@std/path@^1.0.7": "1.0.8",
     "npm:@tensorflow/tfjs-node@*": "4.21.0",
+    "npm:@tensorflow/tfjs-node@^4.22.0": "4.22.0",
+    "npm:@types/node@*": "22.5.4",
     "npm:async-mutex@*": "0.5.0",
+    "npm:async-mutex@0.5": "0.5.0",
     "npm:cheerio@*": "1.0.0",
+    "npm:cheerio@1": "1.0.0",
     "npm:html-minifier@*": "4.0.0",
+    "npm:html-minifier@4": "4.0.0",
     "npm:markdown-it@*": "14.1.0",
-    "npm:nsfwjs@*": "4.2.0_@tensorflow+tfjs@4.21.0__@tensorflow+tfjs-core@4.21.0_buffer@6.0.3",
+    "npm:markdown-it@^14.1.0": "14.1.0",
+    "npm:nsfwjs@*": "4.2.0_@tensorflow+tfjs@4.22.0__@tensorflow+tfjs-core@4.22.0_buffer@6.0.3",
+    "npm:nsfwjs@^4.2.0": "4.2.0_@tensorflow+tfjs@4.22.0__@tensorflow+tfjs-core@4.22.0_buffer@6.0.3",
     "npm:octokit@*": "4.0.2_@octokit+core@6.1.2",
+    "npm:octokit@^4.0.2": "4.0.2_@octokit+core@6.1.2",
     "npm:ollama@*": "0.5.9",
-    "npm:sharp@*": "0.33.5"
+    "npm:ollama@~0.5.9": "0.5.9",
+    "npm:sharp@*": "0.33.5",
+    "npm:sharp@~0.33.5": "0.33.5"
   },
   "jsr": {
     "@std/fs@1.0.4": {
       "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c",
       "dependencies": [
-        "jsr:@std/path"
+        "jsr:@std/path@^1.0.6"
+      ]
+    },
+    "@std/fs@1.0.5": {
+      "integrity": "41806ad6823d0b5f275f9849a2640d87e4ef67c51ee1b8fb02426f55e02fd44e",
+      "dependencies": [
+        "jsr:@std/path@^1.0.7"
       ]
     },
     "@std/html@1.0.3": {
@@ -26,6 +45,9 @@
     },
     "@std/path@1.0.6": {
       "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
+    },
+    "@std/path@1.0.8": {
+      "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
     }
   },
   "npm": {
@@ -327,7 +349,15 @@
     "@tensorflow/tfjs-backend-cpu@4.21.0_@tensorflow+tfjs-core@4.21.0": {
       "integrity": "sha512-yS9Oisg4L48N7ML6677ilv1eP5Jt59S74skSU1cCsM4yBAtH4DAn9b89/JtqBISh6JadanfX26b4HCWQvMvqFg==",
       "dependencies": [
-        "@tensorflow/tfjs-core",
+        "@tensorflow/tfjs-core@4.21.0",
+        "@types/seedrandom",
+        "seedrandom"
+      ]
+    },
+    "@tensorflow/tfjs-backend-cpu@4.22.0_@tensorflow+tfjs-core@4.22.0": {
+      "integrity": "sha512-1u0FmuLGuRAi8D2c3cocHTASGXOmHc/4OvoVDENJayjYkS119fcTcQf4iHrtLthWyDIPy3JiPhRrZQC9EwnhLw==",
+      "dependencies": [
+        "@tensorflow/tfjs-core@4.22.0",
         "@types/seedrandom",
         "seedrandom"
       ]
@@ -335,8 +365,18 @@
     "@tensorflow/tfjs-backend-webgl@4.21.0_@tensorflow+tfjs-core@4.21.0": {
       "integrity": "sha512-7k6mb7dd0uF9jI51iunF3rhEXjvR/a613kjWZ0Rj3o1COFrneyku2C7cRMZERWPhbgXZ+dF+j9MdpGIpgtShIQ==",
       "dependencies": [
-        "@tensorflow/tfjs-backend-cpu",
-        "@tensorflow/tfjs-core",
+        "@tensorflow/tfjs-backend-cpu@4.21.0_@tensorflow+tfjs-core@4.21.0",
+        "@tensorflow/tfjs-core@4.21.0",
+        "@types/offscreencanvas@2019.3.0",
+        "@types/seedrandom",
+        "seedrandom"
+      ]
+    },
+    "@tensorflow/tfjs-backend-webgl@4.22.0_@tensorflow+tfjs-core@4.22.0": {
+      "integrity": "sha512-H535XtZWnWgNwSzv538czjVlbJebDl5QTMOth4RXr2p/kJ1qSIXE0vZvEtO+5EC9b00SvhplECny2yDewQb/Yg==",
+      "dependencies": [
+        "@tensorflow/tfjs-backend-cpu@4.22.0_@tensorflow+tfjs-core@4.22.0",
+        "@tensorflow/tfjs-core@4.22.0",
         "@types/offscreencanvas@2019.3.0",
         "@types/seedrandom",
         "seedrandom"
@@ -345,7 +385,13 @@
     "@tensorflow/tfjs-converter@4.21.0_@tensorflow+tfjs-core@4.21.0": {
       "integrity": "sha512-cUhU+F1lGx2qnKk/gRy8odBh0PZlFz0Dl71TG8LVnj0/g352DqiNrKXlKO/po9aWzP8x0KUGC3gNMSMJW+T0DA==",
       "dependencies": [
-        "@tensorflow/tfjs-core"
+        "@tensorflow/tfjs-core@4.21.0"
+      ]
+    },
+    "@tensorflow/tfjs-converter@4.22.0_@tensorflow+tfjs-core@4.22.0": {
+      "integrity": "sha512-PT43MGlnzIo+YfbsjM79Lxk9lOq6uUwZuCc8rrp0hfpLjF6Jv8jS84u2jFb+WpUeuF4K33ZDNx8CjiYrGQ2trQ==",
+      "dependencies": [
+        "@tensorflow/tfjs-core@4.22.0"
       ]
     },
     "@tensorflow/tfjs-core@4.21.0": {
@@ -360,10 +406,32 @@
         "seedrandom"
       ]
     },
+    "@tensorflow/tfjs-core@4.22.0": {
+      "integrity": "sha512-LEkOyzbknKFoWUwfkr59vSB68DMJ4cjwwHgicXN0DUi3a0Vh1Er3JQqCI1Hl86GGZQvY8ezVrtDIvqR1ZFW55A==",
+      "dependencies": [
+        "@types/long",
+        "@types/offscreencanvas@2019.7.3",
+        "@types/seedrandom",
+        "@webgpu/types",
+        "long",
+        "node-fetch@2.6.13",
+        "seedrandom"
+      ]
+    },
     "@tensorflow/tfjs-data@4.21.0_@tensorflow+tfjs-core@4.21.0_seedrandom@3.0.5": {
       "integrity": "sha512-LpJ/vyQMwYHkcVCqIRg7IVVw13VBY7rNAiuhmKP9S5NP/2ye4KA8BJ4XwDIDgjCVQM7glK9L8bMav++xCDf7xA==",
       "dependencies": [
-        "@tensorflow/tfjs-core",
+        "@tensorflow/tfjs-core@4.21.0",
+        "@types/node-fetch",
+        "node-fetch@2.6.13",
+        "seedrandom",
+        "string_decoder"
+      ]
+    },
+    "@tensorflow/tfjs-data@4.22.0_@tensorflow+tfjs-core@4.22.0_seedrandom@3.0.5": {
+      "integrity": "sha512-dYmF3LihQIGvtgJrt382hSRH4S0QuAp2w1hXJI2+kOaEqo5HnUPG0k5KA6va+S1yUhx7UBToUKCBHeLHFQRV4w==",
+      "dependencies": [
+        "@tensorflow/tfjs-core@4.22.0",
         "@types/node-fetch",
         "node-fetch@2.6.13",
         "seedrandom",
@@ -373,14 +441,33 @@
     "@tensorflow/tfjs-layers@4.21.0_@tensorflow+tfjs-core@4.21.0": {
       "integrity": "sha512-a8KaMYlY3+llvE9079nvASKpaaf8xpCMdOjbgn+eGhdOGOcY7QuFUkd/2odvnXDG8fK/jffE1LoNOlfYoBHC4w==",
       "dependencies": [
-        "@tensorflow/tfjs-core"
+        "@tensorflow/tfjs-core@4.21.0"
+      ]
+    },
+    "@tensorflow/tfjs-layers@4.22.0_@tensorflow+tfjs-core@4.22.0": {
+      "integrity": "sha512-lybPj4ZNj9iIAPUj7a8ZW1hg8KQGfqWLlCZDi9eM/oNKCCAgchiyzx8OrYoWmRrB+AM6VNEeIT+2gZKg5ReihA==",
+      "dependencies": [
+        "@tensorflow/tfjs-core@4.22.0"
       ]
     },
     "@tensorflow/tfjs-node@4.21.0": {
       "integrity": "sha512-Vnc+x/xr9LgGEADlVwFr0xTtfOIug5E9LTRWXNE3WANLisJz9g0qycrMPiJhk4hrvr2wg8BkJKLOMfroxKwZ1w==",
       "dependencies": [
         "@mapbox/node-pre-gyp",
-        "@tensorflow/tfjs",
+        "@tensorflow/tfjs@4.21.0_@tensorflow+tfjs-core@4.21.0",
+        "adm-zip",
+        "google-protobuf",
+        "https-proxy-agent@2.2.4",
+        "progress",
+        "rimraf@2.7.1",
+        "tar"
+      ]
+    },
+    "@tensorflow/tfjs-node@4.22.0": {
+      "integrity": "sha512-uHrXeUlfgkMxTZqHkESSV7zSdKdV0LlsBeblqkuKU9nnfxB1pC6DtoyYVaLxznzZy7WQSegjcohxxCjAf6Dc7w==",
+      "dependencies": [
+        "@mapbox/node-pre-gyp",
+        "@tensorflow/tfjs@4.22.0_@tensorflow+tfjs-core@4.22.0",
         "adm-zip",
         "google-protobuf",
         "https-proxy-agent@2.2.4",
@@ -392,12 +479,28 @@
     "@tensorflow/tfjs@4.21.0_@tensorflow+tfjs-core@4.21.0": {
       "integrity": "sha512-7D/+H150ptvt+POMbsME3WlIvLiuBR2rCC2Z0hOKKb/5Ygkj7xsp/K2HzOvUj0g0yjk+utkU45QEYhnhjnbHRA==",
       "dependencies": [
-        "@tensorflow/tfjs-backend-cpu",
-        "@tensorflow/tfjs-backend-webgl",
-        "@tensorflow/tfjs-converter",
-        "@tensorflow/tfjs-core",
-        "@tensorflow/tfjs-data",
-        "@tensorflow/tfjs-layers",
+        "@tensorflow/tfjs-backend-cpu@4.21.0_@tensorflow+tfjs-core@4.21.0",
+        "@tensorflow/tfjs-backend-webgl@4.21.0_@tensorflow+tfjs-core@4.21.0",
+        "@tensorflow/tfjs-converter@4.21.0_@tensorflow+tfjs-core@4.21.0",
+        "@tensorflow/tfjs-core@4.21.0",
+        "@tensorflow/tfjs-data@4.21.0_@tensorflow+tfjs-core@4.21.0_seedrandom@3.0.5",
+        "@tensorflow/tfjs-layers@4.21.0_@tensorflow+tfjs-core@4.21.0",
+        "argparse@1.0.10",
+        "chalk",
+        "core-js",
+        "regenerator-runtime",
+        "yargs"
+      ]
+    },
+    "@tensorflow/tfjs@4.22.0_@tensorflow+tfjs-core@4.22.0": {
+      "integrity": "sha512-0TrIrXs6/b7FLhLVNmfh8Sah6JgjBPH4mZ8JGb7NU6WW+cx00qK5BcAZxw7NCzxj6N8MRAIfHq+oNbPUNG5VAg==",
+      "dependencies": [
+        "@tensorflow/tfjs-backend-cpu@4.22.0_@tensorflow+tfjs-core@4.22.0",
+        "@tensorflow/tfjs-backend-webgl@4.22.0_@tensorflow+tfjs-core@4.22.0",
+        "@tensorflow/tfjs-converter@4.22.0_@tensorflow+tfjs-core@4.22.0",
+        "@tensorflow/tfjs-core@4.22.0",
+        "@tensorflow/tfjs-data@4.22.0_@tensorflow+tfjs-core@4.22.0_seedrandom@3.0.5",
+        "@tensorflow/tfjs-layers@4.22.0_@tensorflow+tfjs-core@4.22.0",
         "argparse@1.0.10",
         "chalk",
         "core-js",
@@ -931,7 +1034,14 @@
     "nsfwjs@4.2.0_@tensorflow+tfjs@4.21.0__@tensorflow+tfjs-core@4.21.0_buffer@6.0.3": {
       "integrity": "sha512-8eMmV+Hfr3hqSX7PzDJx94kFSP4QiN4/G9+b92I3catgQuqOb9Qmns1nDyVI0jMcWc1sVWdqBIA6eYLvKkryxA==",
       "dependencies": [
-        "@tensorflow/tfjs",
+        "@tensorflow/tfjs@4.21.0_@tensorflow+tfjs-core@4.21.0",
+        "buffer"
+      ]
+    },
+    "nsfwjs@4.2.0_@tensorflow+tfjs@4.22.0__@tensorflow+tfjs-core@4.22.0_buffer@6.0.3": {
+      "integrity": "sha512-8eMmV+Hfr3hqSX7PzDJx94kFSP4QiN4/G9+b92I3catgQuqOb9Qmns1nDyVI0jMcWc1sVWdqBIA6eYLvKkryxA==",
+      "dependencies": [
+        "@tensorflow/tfjs@4.22.0_@tensorflow+tfjs-core@4.22.0",
         "buffer"
       ]
     },
@@ -1221,5 +1331,20 @@
         "yargs-parser"
       ]
     }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/fs@^1.0.5",
+      "jsr:@std/html@^1.0.3",
+      "npm:@tensorflow/tfjs-node@^4.22.0",
+      "npm:async-mutex@0.5",
+      "npm:cheerio@1",
+      "npm:html-minifier@4",
+      "npm:markdown-it@^14.1.0",
+      "npm:nsfwjs@^4.2.0",
+      "npm:octokit@^4.0.2",
+      "npm:ollama@~0.5.9",
+      "npm:sharp@~0.33.5"
+    ]
   }
 }

@@ -1,10 +1,10 @@
-import tf from "npm:@tensorflow/tfjs-node";
-import * as nsfw from "npm:nsfwjs";
+import tf from "@tensorflow/tfjs-node";
+import * as nsfw from "nsfwjs";
 import path from "node:path";
-import sharp from "npm:sharp";
+import sharp from "sharp";
 import { addComment, addLabel } from "./api.ts";
-import markdownit from "npm:markdown-it";
-import * as cheerio from "npm:cheerio";
+import markdownit from "markdown-it";
+import * as cheerio from "cheerio";
 
 const actionId = Deno.env.get("actionId")!,
   repo = Deno.env.get("repo")!,

@@ -1,6 +1,6 @@
-import { minify } from "npm:html-minifier";
-import { copy } from "jsr:@std/fs";
-import { escape } from "jsr:@std/html";
+import { minify } from "html-minifier";
+import { copy } from "@std/fs";
+import { escape } from "@std/html";
 import path from "node:path";
 import GithubEvent from "./github-event.json" with { type: "json" };
 

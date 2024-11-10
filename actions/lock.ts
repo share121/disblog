@@ -1,4 +1,4 @@
-import { Octokit } from "npm:octokit";
+import { Octokit } from "octokit";
 
 const runId = +Deno.env.get("runId")!,
   repo = Deno.env.get("repo")!,

@@ -35,7 +35,8 @@ jobs:
         with:
           deno-version: v2.x
 
-      - run: deno install --node-modules-dir=auto --allow-scripts=npm:@tensorflow/tfjs-node@4.22.0,npm:sharp@0.33.5,npm:core-js@3.29.1
+      - name: Install Depandencies
+        run: deno i --allow-scripts
 
       - name: Rating Images
         env:
@@ -44,7 +45,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           discussionId: ${{ github.event.discussion.node_id }}
           discussionBody: ${{ github.event.discussion.body }}
-        run: deno run --node-modules-dir=auto -A actions/nsfw_rating.ts
+        run: deno run -A actions/nsfw_rating.ts
 
   discussion-rating:
     runs-on: ubuntu-latest

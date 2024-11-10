@@ -54,29 +54,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
-
-  build-and-deploy:
-    needs: save-discussion
-    concurrency:
-      group: build-and-deploy
-      cancel-in-progress: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - name: Build
-        env:
-          repo: ${{ github.repository }}
-        run: deno run -A actions/build.ts
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          cname: s121.top

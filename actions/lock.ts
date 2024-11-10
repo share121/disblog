@@ -10,18 +10,14 @@ const octokit = new Octokit();
 const workflowId = await getWorkflowId(owner, repoName, workflowName) as number;
 const allRuns = await getWorkflowRuns(owner, repoName, workflowId);
 const beforeRuns = allRuns.data.workflow_runs.filter((e) => {
-  return notMyself() && isRunning() && isBefore();
+  return isBefore() && isRunning();
 
   function isRunning() {
     if (!e.status) return false;
     return ["in_progress", "queued"].includes(e.status);
   }
   function isBefore() {
-    const updatedAt = new Date(e.updated_at);
-    return updatedAt.getTime() < Date.now();
-  }
-  function notMyself() {
-    return e.id !== runId;
+    return e.id < runId;
   }
 });
 
